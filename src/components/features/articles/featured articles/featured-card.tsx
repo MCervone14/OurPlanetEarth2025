@@ -13,9 +13,9 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
   const authorImage = typeof author?.image === 'object' ? author?.image : null
 
   return (
-    <article className="rounded-xl shadow-lg bg-white w-full h-fit relative mt-8 lg:min-h-[620px]">
+    <article className="rounded-xl shadow-lg bg-white relative mt-8 max-w-[650px] lg:max-w-[1250px] mx-auto">
       <div
-        className={`flex flex-col w-full h-full ${Number(article.id) % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
+        className={`flex flex-col  ${Number(article.id) % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
       >
         <div className="absolute top-0 right-0 z-10 bg-gray-200 px-2 py-1 text-sm t flex justify-center items-center rounded-tr-md">
           <CalendarIcon className="inline-block mr-1 h-4 w-4 " />
@@ -27,10 +27,12 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           alt={featuredImage?.altText ?? ''}
           width={featuredImage?.width ?? 0}
           height={featuredImage?.height ?? 0}
-          className={`object-cover ${Number(article.id) % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'} lg:min-h-[620px] lg:max-w-[753px]`}
+          placeholder="blur"
+          blurDataURL={featuredImage?.url ?? ''}
+          className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}
         />
         {/*Text Side of Featured Card*/}
-        <div className="flex-col p-5 w-full">
+        <div className="flex-col p-5 lg:max-w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
               <div
@@ -54,15 +56,15 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
                 </span>
               </div>
               <Separator className="border-gray-300 border-[1px]" />
-              <h2 className="text-5xl">
+              <h2 className="text-2xl lg:text-5xl">
                 <Link
                   href={`/articles/${article.slug}`}
-                  className="hover:text-green-600 transition-colors"
+                  className="   hover:text-green-600 transition-colors line-clamp-2"
                 >
                   {article.title}
                 </Link>
               </h2>
-              <p className="text-gray-600 mb-4 line-clamp-8">{article.excerpt}</p>
+              <p className="text-gray-600 mb-4 line-clamp-4">{article.excerpt}</p>
             </div>
           </div>
           {/*The Card Navigation Bar*/}
@@ -88,7 +90,7 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
                     className="flex items-center hover:text-blue-600 transition-colors"
                   >
                     <ChatBubbleIcon className="mr-1 h-4 w-4" />
-                    <span>{article.comments.length}</span>
+                    <span>{article.comments?.length}</span>
                   </Link>
                 </li>
               </div>

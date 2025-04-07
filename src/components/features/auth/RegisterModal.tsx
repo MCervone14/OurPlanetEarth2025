@@ -1,34 +1,59 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
 import { FaApple, FaMeta } from 'react-icons/fa6'
-import { LuEye } from 'react-icons/lu'
 import { FcGoogle } from 'react-icons/fc'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import Image from 'next/image'
 import Link from 'next/link'
-import { RegisterUser } from '@/actions/auth'
+import { RegisterUserSchema } from '@/lib/schemas'
+import { z } from 'zod'
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5'
 
 export default function RegisterModal() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [rememberMe, setRememberMe] = useState(false)
+  const form = useForm<z.output<typeof RegisterUserSchema>>({
+    resolver: zodResolver(RegisterUserSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  })
   const [seePassword, setSeePassword] = useState(false)
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false)
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [payloadMessage, setPayloadMessage] = useState('')
+  const [payloadError, setPayloadError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
+  const onSubmit = async (data: z.output<typeof RegisterUserSchema>) => {
+    const formData = new FormData()
+    formData.append('email', data.email)
+    formData.append('password', data.password)
+    formData.append('confirmPassword', data.confirmPassword)
+
+    // const response = await RegisterUser(formData)
+    // console.log(response)
+    // if (!response.success) {
+    //   setPayloadError(response?.errors as string)
+    // } else {
+    //   setPayloadMessage(response?.message as string)
+    //   form.reset()
+    // }
   }
 
   return (
-    <Card className="flex-row w-full h-full rounded-none p-0 border-none">
+    <Card className="flex-row w-full h-full rounded-none p-0 border-none justify-center">
       <div className="w-1/3 relative z-10">
         <Image
           src="/uploads/wind.jpg"
@@ -40,7 +65,7 @@ export default function RegisterModal() {
       </div>
       <CardContent className="text-center flex flex-col justify-center items-center bg-white h-[750px] p-20 space-y-4">
         <div className="flex flex-col items-center space-y-2">
-          <CardTitle className="text-3xl font-bold">Register</CardTitle>
+          <CardTitle className="text-3xl font-bold">Sign Up</CardTitle>
           <p className="text-sm text-gray-600">Welcome! Please enter your details to sign up.</p>
         </div>
 
@@ -66,77 +91,111 @@ export default function RegisterModal() {
           </div>
         </div>
 
-        <form action={RegisterUser} className="space-y-4 w-full ">
-          <Input
-            className="py-5"
-            name="email"
-            type="email"
-            placeholder="Enter your Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <div className="relative">
-            <Input
-              name="password"
-              className="py-5"
-              type={!seePassword ? 'password' : 'text'}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <div
-              onClick={() => setSeePassword(!seePassword)}
-              className="hover:cursor-pointer hover:text-gray-700 absolute inset-y-0 right-0 flex my-auto items-center pr-3 text-gray-400"
-            >
-              <LuEye className="w-5 h-5 mr-2" />
-            </div>
-          </div>
-
-          <div className="relative">
-            <Input
-              name="confirmPassword"
-              className="py-5 ring-green-900"
-              type={!seeConfirmPassword ? 'password' : 'text'}
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <div
-              onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
-              className="hover:cursor-pointer hover:text-gray-700 absolute inset-y-0 right-0 flex my-auto items-center pr-3 text-gray-400"
-            >
-              <LuEye className="w-5 h-5 mr-2" />
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="remember"
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-              />
-              <label htmlFor="remember" className="text-sm text-gray-600">
-                Remember me
-              </label>
-            </div>
-            <a href="#" className="text-sm text-gray-600 hover:underline">
-              Forgot password?
-            </a>
-          </div>
-          <Button
-            type="submit"
-            className="w-full bg-green-900 text-white cursor-pointer hover:bg-green-800"
+        <Form {...form}>
+          <form
+            className="space-y-4 w-full"
+            onSubmit={form.handleSubmit(onSubmit)}
+            onChange={() => {
+              setPayloadMessage('')
+              setPayloadError('')
+            }}
           >
-            Sign Up
-          </Button>
-        </form>
+            <FormField
+              control={form.control}
+              name={'email'}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="py-5"
+                      type="email"
+                      placeholder="Enter your Email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="relative">
+              <FormField
+                control={form.control}
+                name={'password'}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="py-5"
+                        type={!seePassword ? 'password' : 'text'}
+                        {...field}
+                        placeholder="Enter your password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div
+                onClick={() => setSeePassword(!seePassword)}
+                className="hover:cursor-pointer hover:text-gray-700 absolute right-0 pr-3 top-8 text-gray-400"
+              >
+                {seePassword ? (
+                  <IoEyeOutline className="w-5 h-5 mr-2" />
+                ) : (
+                  <IoEyeOffOutline className="w-5 h-5 mr-2" />
+                )}
+              </div>
+            </div>
+
+            <div className="relative">
+              <FormField
+                control={form.control}
+                name={'confirmPassword'}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="py-5 ring-green-900"
+                        {...field}
+                        type={!seeConfirmPassword ? 'password' : 'text'}
+                        placeholder="Confirm your password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div
+                onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
+                className="hover:cursor-pointer hover:text-gray-700 absolute right-0 pr-3 top-8 text-gray-400"
+              >
+                {seeConfirmPassword ? (
+                  <IoEyeOutline className="w-5 h-5 mr-2" />
+                ) : (
+                  <IoEyeOffOutline className="w-5 h-5 mr-2" />
+                )}
+              </div>
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-green-900 text-white cursor-pointer hover:bg-green-800"
+            >
+              {form.formState.isSubmitting ? 'Submitting' : 'Sign Up'}
+            </Button>
+            {payloadMessage && <p className="text-sm text-green-600">{payloadMessage}</p>}
+
+            {payloadError && !payloadMessage && (
+              <p className="text-destructive text-sm">{payloadError}</p>
+            )}
+          </form>
+        </Form>
 
         <p className="text-sm text-center text-gray-600">
           Already have account?{' '}
-          <Link href="/login">
+          <Link href="/auth/sign-in">
             <Button
               variant="ghost"
               className="font-medium hover:text-blue-600 hover:underline cursor-pointer hover:bg-white"

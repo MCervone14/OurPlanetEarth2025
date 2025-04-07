@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 type PayloadNode = {
   type?: string
@@ -102,7 +103,11 @@ const SerializedLexical = ({ blocks }: { blocks: PayloadBlock[] }) => {
             <div key={block.id}>
               {renderNode(block?.content.root)}
               {block.image && (
-                <img src={block?.image?.url} alt={block?.image?.alt || ''} className="my-4" />
+                <Image
+                  src={block?.image?.url as string}
+                  alt={block?.image?.alt || ''}
+                  className="my-4"
+                />
               )}
             </div>
           )

@@ -11,7 +11,6 @@ const NewsletterForm = () => {
   const [email, setEmail] = useState('')
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState('')
-  const [active, setActive] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -59,9 +58,7 @@ const NewsletterForm = () => {
             required
           />
           <Button
-            className={`${
-              active && 'active'
-            } text-white p-0 px-3 text-sm md:text-base disabled:!bg-[#17141F] disabled:grayscale-[65%] disabled:opacity-50 disabled:cursor-not-allowed `}
+            className={`text-white p-0 px-3 text-sm md:text-base disabled:!bg-[#17141F] disabled:grayscale-[65%] disabled:opacity-50 disabled:cursor-not-allowed `}
             ref={buttonRef}
             disabled={!email}
           >

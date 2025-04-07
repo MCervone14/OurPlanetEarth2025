@@ -10,13 +10,8 @@ import { FileIcon } from 'lucide-react'
 import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import Comments from '@/components/features/comments'
 import { Category } from '@/payload-types'
-
-interface RichTextNode {
-  type: string
-  children: RichTextNode[]
-  text?: string
-  url?: string
-}
+import { SignedIn } from '@/components/features/auth/signed-in'
+import { SignedOut } from '@/components/features/auth/signed-out'
 
 const GetArticle = cache(async (slug: string) => {
   const payload = await getPayload({ config: configPromise })
@@ -47,8 +42,6 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
     return <p>No Article Found!</p>
   }
 
-  // @ts-ignore
-  // @ts-ignore
   return (
     <article className="relative flex items-center justify-center flex-col bg-white shadow-2xl">
       <p className="absolute border-2 border-white top-1 right-1 bg-green-950 text-white p-2">
@@ -80,7 +73,7 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
                 className="flex items-center hover:text-blue-600 transition-colors scroll-auto"
               >
                 <ChatBubbleIcon className="mr-1 h-4 w-4" />
-                <span>{article?.comments.length}</span>
+                <span>{article?.comments?.length}</span>
               </Link>
             </li>
           </div>
@@ -89,22 +82,27 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
       <div className="px-40 py-10">
         <h1 className="mb-4 text-lg lg:text-6xl">{article.title}</h1>
         <div className="prose-a:text-blue-700 hover:prose-a:text-blue-600">
-          {/*@ts-ignore*/}
+          {/*@ts-expect-error temporary until I figure out blocks in payload*/}
           <SerializedLexical blocks={article.blocks} />
         </div>
       </div>
       <div id="comments">
-        <Comments articleId={String(article.id)} />
+        <SignedIn>
+          <Comments articleId={article.id} />
+        </SignedIn>
+        <SignedOut>
+          <div className="text-2xl font-semibold border-2 p-5">
+            Login to see article's comment section
+          </div>
+        </SignedOut>
       </div>
-      <Button className="my-10 text-lg" size={'lg'} variant={'secondary'}>
+      <Button
+        className="my-10 text-lg bg-gray-600 hover:bg-gray-500 text-secondary cursor-pointer"
+        size={'lg'}
+        variant={'secondary'}
+      >
         <Link href="/articles">Back to Articles</Link>
       </Button>
-      {/*<div>*/}
-      {/*  <h3>Other Related Articles:</h3>*/}
-      {/*  /!*{relatedArticles.slice(1, 4).map((article, idx) => (*!/*/}
-      {/*  /!*  <RelatedArticle key={idx} article={article} />*!/*/}
-      {/*  /!*))}*!/*/}
-      {/*</div>*/}
     </article>
   )
 }

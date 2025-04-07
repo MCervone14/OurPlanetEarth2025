@@ -1,6 +1,4 @@
-'use client'
-
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { forwardRef } from 'react'
 import Link from 'next/link'
 import {
   NavigationMenu,
@@ -9,7 +7,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import {
   DropdownMenu,
@@ -24,12 +21,12 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Logo from '../logo'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
-import { useGetCookie } from 'cookies-next/client'
-import Profile from '../../profile'
+import { UserButton } from '@/components/features/buttons/user-button'
+import { SignedOut } from '@/components/features/auth/signed-out'
+import { SignedIn } from '@/components/features/auth/signed-in'
+import { HandCoins, Store, UserIcon } from 'lucide-react'
 
-const Navbar = (props: any) => {
-  const getTokenCookie = useGetCookie()
-
+const Navbar = async () => {
   return (
     <header className="max-w-7xl mx-auto flex items-center justify-between py-2 sm:px-6 lg:px-8">
       {/*For Mobile View*/}
@@ -61,12 +58,12 @@ const Navbar = (props: any) => {
       {/* End For Mobile View*/}
 
       <Logo />
-      <NavigationMenu className="hidden md:flex gap-20 z-200">
+      <NavigationMenu className="hidden md:flex gap-20 z-200 ">
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger className="bg-gray-100">Blog Articles</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="p-4 md:w-[400px] lg:w-[400px] z-100 bg-white">
+              <ul className="p-4 md:w-[400px] lg:w-[400px] z-100 bg-white flex items-center">
                 <ListItem href="/articles" title="Articles" className="p-4 hover:bg-green-100">
                   The complete list of Our Planet Earth articles.
                 </ListItem>
@@ -80,40 +77,61 @@ const Navbar = (props: any) => {
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/team" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} bg-gray-100`}>
-                Meet the Team
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
+          <ListItem href="/team" title="Meet the Team" className="mt-2" />
         </NavigationMenuList>
         <NavigationMenuList className="gap-3">
-          {!getTokenCookie('payload-token') ? (
-            <>
-              <NavigationMenuItem>
-                <Link href={'/login'}>
-                  <Button variant="outline" className="cursor-pointer hover:bg-green-100">
-                    Sign In
-                  </Button>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href={'/register'}>
-                  <Button
-                    variant="outline"
-                    className="bg-blue-950 hover:text-white text-white hover:bg-blue-800 cursor-pointer"
-                  >
-                    Sign Up
-                  </Button>
-                </Link>
-              </NavigationMenuItem>
-            </>
-          ) : (
+          <SignedOut>
             <NavigationMenuItem>
-              <Profile />
+              <Link href={'/auth/sign-in'}>
+                <Button variant="outline" className="cursor-pointer hover:bg-green-100">
+                  Log In
+                </Button>
+              </Link>
             </NavigationMenuItem>
-          )}
+            <NavigationMenuItem>
+              <Link href={'/auth/sign-up'}>
+                <Button
+                  variant="outline"
+                  className="hover:text-white text-white bg-green-800 hover:bg-green-700 cursor-pointer"
+                >
+                  Register
+                </Button>
+              </Link>
+            </NavigationMenuItem>
+          </SignedOut>
+
+          <SignedIn>
+            <NavigationMenuItem>
+              <UserButton
+                disableDefaultLinks={true}
+                additionalLinks={[
+                  // {
+                  //   href: '/our-planet-earth-blog-shop',
+                  //   label: 'Our Planet Earth Store',
+                  //   signedIn: true,
+                  //   icon: <Store />,
+                  // },
+                  { href: '/profile', label: 'User Profile', signedIn: true, icon: <UserIcon /> },
+                  {
+                    href: 'https://donate.stripe.com/test_bIY5nacC66fMeD65kk',
+                    label: 'Donate',
+                    signedIn: true,
+                    icon: <HandCoins />,
+                  },
+                ]}
+                classNames={{
+                  base: 'text-secondary hover:cursor-pointer',
+                  content: {
+                    avatar: {
+                      fallback: 'bg-green-950 text-secondary',
+                      fallbackIcon: 'bg-green-950',
+                    },
+                    menuItem: 'hover:cursor-pointer',
+                  },
+                }}
+              />
+            </NavigationMenuItem>
+          </SignedIn>
         </NavigationMenuList>
       </NavigationMenu>
     </header>

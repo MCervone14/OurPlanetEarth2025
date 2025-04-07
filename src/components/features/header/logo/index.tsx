@@ -16,7 +16,7 @@ const Logo = ({ className }: { className?: string }) => {
       </Link>
       <h6
         className={cn(
-          `hidden lg:block text-lg transform -translate-y-10 text-gray-600 opacity-80`,
+          `hidden lg:block text-lg transform -translate-y-10 text-blue-700 opacity-80`,
           className,
         )}
       >

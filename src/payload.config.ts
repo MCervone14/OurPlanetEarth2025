@@ -1,23 +1,27 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { buildConfig, Payload } from 'payload'
+import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { Users } from './payload/collections/Users'
+import { Posts } from 'src/payload/collections/Posts'
+import { Media } from './payload/collections/Media'
+import { Authors } from './payload/collections/Authors'
+import { Categories } from './payload/collections/Categories'
+import { Comments } from 'src/payload/collections/Comments'
 import sharp from 'sharp'
-
-import { s3Storage } from '@payloadcms/storage-s3'
-import { Users } from './collections/Users'
-import { Posts } from '@/collections/Posts'
-import { Media } from './collections/Media'
-import { Authors } from './collections/Authors'
-import { Categories } from './collections/Categories'
+import path from 'path'
+import { betterAuthPlugin } from 'payload-auth/better-auth'
+import { betterAuthPluginOptions } from '@/lib/auth/options'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { Comments } from '@/collections/Comments'
+import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+import { s3Storage } from '@payloadcms/storage-s3'
+import { Products } from '@/payload/collections/Products'
+import { AudioChapters } from '@/payload/collections/AudioChapters'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const allowedOrigins = [process.env.NEXT_PUBLIC_SERVER_URL as string].filter(Boolean)
 
 export default buildConfig({
   admin: {
@@ -25,20 +29,33 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      views: {
+        'reset-password': {
+          Component: '@/components/features/auth/reset-password#ResetPass',
+          path: '/reset-password',
+        },
+        'forget-password': {
+          Component: '@/components/features/auth/forget-password#ForgetPass',
+          path: '/forget-password',
+        },
+      },
+    },
   },
-  collections: [Users, Media, Posts, Categories, Authors, Comments],
-  editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
+  collections: [Users, Media, Posts, Categories, Authors, Comments, Products, AudioChapters],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  sharp,
+  editor: lexicalEditor(),
+  email: resendAdapter({
+    defaultFromAddress: 'no-reply@blog.ourplanetearth.eco',
+    defaultFromName: 'Our Planet Earth',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   plugins: [
+    betterAuthPlugin(betterAuthPluginOptions),
     seoPlugin({
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `${doc.title} - Our Planet Earth`,
@@ -63,26 +80,12 @@ export default buildConfig({
       },
     }),
   ],
-  onInit: async (payload: Payload) => {
-    console.log('Seeding the Admin Users')
-    const existingAdmins = await payload.find({
-      collection: 'users',
-      where: {
-        roles: {
-          equals: 'admin',
-        },
-      },
-    })
-
-    if (existingAdmins.docs.length === 0) {
-      await payload.create({
-        collection: 'users',
-        data: {
-          email: 'youngmc89@yahoo.com',
-          password: 'Pa$$w0rd', // local dummy Pass
-          roles: 'admin',
-        },
-      })
-    }
+  secret: process.env.PAYLOAD_SECRET || '',
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000',
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
+  sharp,
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 })

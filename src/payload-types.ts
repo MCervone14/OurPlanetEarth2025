@@ -6,17 +6,85 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * Supported timezones in IANA format.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supportedTimezones".
+ */
+export type SupportedTimezones =
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
   };
+  blocks: {};
   collections: {
     users: User;
+    accounts: Account;
+    sessions: Session;
+    verifications: Verification;
+    twoFactors: TwoFactor;
+    passkeys: Passkey;
+    apiKeys: ApiKey;
+    organizations: Organization;
+    members: Member;
+    invitations: Invitation;
+    teams: Team;
     media: Media;
     posts: Post;
     categories: Category;
     authors: Author;
     comments: Comment;
+    products: Product;
+    audioChapters: AudioChapter;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -24,11 +92,23 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    accounts: AccountsSelect<false> | AccountsSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
+    verifications: VerificationsSelect<false> | VerificationsSelect<true>;
+    twoFactors: TwoFactorsSelect<false> | TwoFactorsSelect<true>;
+    passkeys: PasskeysSelect<false> | PasskeysSelect<true>;
+    apiKeys: ApiKeysSelect<false> | ApiKeysSelect<true>;
+    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
+    invitations: InvitationsSelect<false> | InvitationsSelect<true>;
+    teams: TeamsSelect<false> | TeamsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
     comments: CommentsSelect<false> | CommentsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    audioChapters: AudioChaptersSelect<false> | AudioChaptersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -71,9 +151,55 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
-  roles?: ('admin' | 'user') | null;
+  /**
+   * Users chosen display name
+   */
+  name?: string | null;
+  /**
+   * Whether the email of the user has been verified
+   */
+  emailVerified: boolean;
+  /**
+   * The image of the user
+   */
+  image?: string | null;
+  /**
+   * The role of the user
+   */
+  role: 'admin' | 'user';
   updatedAt: string;
   createdAt: string;
+  /**
+   * Whether the user has two factor authentication enabled
+   */
+  twoFactorEnabled?: boolean | null;
+  /**
+   * Whether the user is anonymous.
+   */
+  isAnonymous?: boolean | null;
+  /**
+   * The phone number of the user
+   */
+  phoneNumber?: string | null;
+  /**
+   * Whether the phone number of the user has been verified
+   */
+  phoneNumberVerified?: boolean | null;
+  /**
+   * Whether the user is banned from the platform
+   */
+  banned?: boolean | null;
+  /**
+   * The reason for the ban
+   */
+  banReason?: string | null;
+  /**
+   * The date and time when the ban will expire
+   */
+  banExpires?: string | null;
+  /**
+   * The email of the user
+   */
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -82,6 +208,392 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * Accounts are used to store user accounts for authentication providers
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts".
+ */
+export interface Account {
+  id: number;
+  /**
+   * The user that the account belongs to
+   */
+  user: number | User;
+  /**
+   * The id of the account as provided by the SSO or equal to userId for credential accounts
+   */
+  accountId: string;
+  /**
+   * The id of the provider as provided by the SSO
+   */
+  providerId: string;
+  /**
+   * The access token of the account. Returned by the provider
+   */
+  accessToken?: string | null;
+  /**
+   * The refresh token of the account. Returned by the provider
+   */
+  refreshToken?: string | null;
+  /**
+   * The date and time when the access token will expire
+   */
+  accessTokenExpiresAt?: string | null;
+  /**
+   * The date and time when the refresh token will expire
+   */
+  refreshTokenExpiresAt?: string | null;
+  /**
+   * The scope of the account. Returned by the provider
+   */
+  scope?: string | null;
+  /**
+   * The id token for the account. Returned by the provider
+   */
+  idToken?: string | null;
+  /**
+   * The hashed password of the account. Mainly used for email and password authentication
+   */
+  password?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Sessions are active sessions for users. They are used to authenticate users with a session token
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: number;
+  /**
+   * The user that the session belongs to
+   */
+  user: number | User;
+  /**
+   * The unique session token
+   */
+  token: string;
+  /**
+   * The date and time when the session will expire
+   */
+  expiresAt: string;
+  /**
+   * The IP address of the device
+   */
+  ipAddress?: string | null;
+  /**
+   * The user agent information of the device
+   */
+  userAgent?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  /**
+   * The admin who is impersonating this session
+   */
+  impersonatedBy?: (number | null) | User;
+  /**
+   * The currently active organization for the session
+   */
+  activeOrganization?: (number | null) | Organization;
+}
+/**
+ * Organizations are groups of users that share access to certain resources.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations".
+ */
+export interface Organization {
+  id: number;
+  /**
+   * The name of the organization.
+   */
+  name: string;
+  /**
+   * The slug of the organization.
+   */
+  slug?: string | null;
+  /**
+   * The logo of the organization.
+   */
+  logo?: string | null;
+  /**
+   * Additional metadata for the organization.
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Verifications are used to verify authentication requests
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications".
+ */
+export interface Verification {
+  id: number;
+  /**
+   * The identifier of the verification request
+   */
+  identifier: string;
+  /**
+   * The value to be verified
+   */
+  value: string;
+  /**
+   * The date and time when the verification request will expire
+   */
+  expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Two factor authentication secrets
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "twoFactors".
+ */
+export interface TwoFactor {
+  id: number;
+  /**
+   * The user that the two factor authentication secret belongs to
+   */
+  user: number | User;
+  /**
+   * The secret used to generate the TOTP code.
+   */
+  secret?: string | null;
+  /**
+   * The backup codes used to recover access to the account if the user loses access to their phone or email
+   */
+  backupCodes: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Passkeys are used to authenticate users
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "passkeys".
+ */
+export interface Passkey {
+  id: number;
+  /**
+   * The name of the passkey
+   */
+  name?: string | null;
+  /**
+   * The public key of the passkey
+   */
+  publicKey: string;
+  /**
+   * The user that the passkey belongs to
+   */
+  user: number | User;
+  /**
+   * The unique identifier of the registered credential
+   */
+  credentialID: string;
+  /**
+   * The counter of the passkey
+   */
+  counter: number;
+  /**
+   * The type of device used to register the passkey
+   */
+  deviceType: string;
+  /**
+   * Whether the passkey is backed up
+   */
+  backedUp: boolean;
+  /**
+   * The transports used to register the passkey
+   */
+  transports: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * API keys are used to authenticate requests to the API.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apiKeys".
+ */
+export interface ApiKey {
+  id: number;
+  /**
+   * The name of the API key.
+   */
+  name?: string | null;
+  /**
+   * The starting characters of the API key. Useful for showing the first few characters of the API key in the UI for the users to easily identify.
+   */
+  start?: string | null;
+  /**
+   * The API Key prefix. Stored as plain text.
+   */
+  prefix?: string | null;
+  /**
+   * The hashed API key itself.
+   */
+  key: string;
+  /**
+   * The user associated with the API key.
+   */
+  user: number | User;
+  /**
+   * The interval to refill the key in milliseconds.
+   */
+  refillInterval?: number | null;
+  /**
+   * The amount to refill the remaining count of the key.
+   */
+  refillAmount?: number | null;
+  /**
+   * The date and time when the key was last refilled.
+   */
+  lastRefillAt?: string | null;
+  /**
+   * Whether the API key is enabled.
+   */
+  enabled?: boolean | null;
+  /**
+   * Whether the API key has rate limiting enabled.
+   */
+  rateLimitEnabled?: boolean | null;
+  /**
+   * The time window in milliseconds for the rate limit.
+   */
+  rateLimitTimeWindow?: number | null;
+  /**
+   * The maximum number of requests allowed within the rate limit time window.
+   */
+  rateLimitMax?: number | null;
+  /**
+   * The number of requests made within the rate limit time window.
+   */
+  requstCount: number;
+  /**
+   * The number of requests remaining.
+   */
+  remaining?: number | null;
+  /**
+   * The date and time of the last request made to the key.
+   */
+  lastRequest?: string | null;
+  /**
+   * The date and time of when the API key will expire.
+   */
+  expiresAt?: string | null;
+  /**
+   * The permissions for the API key.
+   */
+  permissions?: string | null;
+  /**
+   * Any additional metadata you want to store with the key.
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Members of an organization.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: number;
+  /**
+   * The organization that the member belongs to.
+   */
+  organization: number | Organization;
+  /**
+   * The user that is a member of the organization.
+   */
+  user: number | User;
+  /**
+   * The team that the member belongs to.
+   */
+  team?: (number | null) | Team;
+  /**
+   * The role of the member in the organization.
+   */
+  role: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Teams are groups of users that share access to certain resources.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teams".
+ */
+export interface Team {
+  id: number;
+  /**
+   * The name of the team.
+   */
+  name: string;
+  /**
+   * The organization that the team belongs to.
+   */
+  organization: number | Organization;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Invitations to join an organization
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "invitations".
+ */
+export interface Invitation {
+  id: number;
+  /**
+   * The email of the user being invited.
+   */
+  email: string;
+  /**
+   * The user who invited the user.
+   */
+  inviter: number | User;
+  /**
+   * The organization that the user is being invited to.
+   */
+  organization: number | Organization;
+  /**
+   * The role of the user being invited.
+   */
+  role: string;
+  /**
+   * The status of the invitation.
+   */
+  status: string;
+  /**
+   * The date and time when the invitation will expire.
+   */
+  expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -165,7 +677,7 @@ export interface Post {
   featuredImage: number | Media;
   categories: (number | Category)[];
   excerpt: string;
-  comments: (number | Comment)[];
+  comments?: (number | Comment)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -178,6 +690,7 @@ export interface Author {
   name: string;
   image: number | Media;
   bio: string;
+  'author-posts'?: (number | Post)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -187,6 +700,7 @@ export interface Author {
  */
 export interface Category {
   id: number;
+  slug: string;
   category:
     | 'Cry of the Earth'
     | 'Cry of the Poor'
@@ -195,7 +709,7 @@ export interface Category {
     | 'Ecological Education'
     | 'Ecological Spirituality'
     | 'Community Involvement';
-  slug: string;
+  'category-posts'?: (number | Post)[] | null;
   title: string;
   description: string;
   color: string;
@@ -225,6 +739,37 @@ export interface Comment {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  slug: string;
+  productType: 'audiobook' | 'ebook' | 'book' | 'merch' | 'other';
+  quantity: number;
+  price: number;
+  description: string;
+  image: (number | Media)[];
+  audioChapters?: (number | AudioChapter)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audioChapters".
+ */
+export interface AudioChapter {
+  id: number;
+  title: string;
+  order: number;
+  duration?: string | null;
+  audioFile: number | Media;
+  product?: (number | null) | Product;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -233,6 +778,46 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'accounts';
+        value: number | Account;
+      } | null)
+    | ({
+        relationTo: 'sessions';
+        value: number | Session;
+      } | null)
+    | ({
+        relationTo: 'verifications';
+        value: number | Verification;
+      } | null)
+    | ({
+        relationTo: 'twoFactors';
+        value: number | TwoFactor;
+      } | null)
+    | ({
+        relationTo: 'passkeys';
+        value: number | Passkey;
+      } | null)
+    | ({
+        relationTo: 'apiKeys';
+        value: number | ApiKey;
+      } | null)
+    | ({
+        relationTo: 'organizations';
+        value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'members';
+        value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'invitations';
+        value: number | Invitation;
+      } | null)
+    | ({
+        relationTo: 'teams';
+        value: number | Team;
       } | null)
     | ({
         relationTo: 'media';
@@ -253,6 +838,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'comments';
         value: number | Comment;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'audioChapters';
+        value: number | AudioChapter;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -301,9 +894,19 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  roles?: T;
+  name?: T;
+  emailVerified?: T;
+  image?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
+  twoFactorEnabled?: T;
+  isAnonymous?: T;
+  phoneNumber?: T;
+  phoneNumberVerified?: T;
+  banned?: T;
+  banReason?: T;
+  banExpires?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -311,6 +914,151 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts_select".
+ */
+export interface AccountsSelect<T extends boolean = true> {
+  user?: T;
+  accountId?: T;
+  providerId?: T;
+  accessToken?: T;
+  refreshToken?: T;
+  accessTokenExpiresAt?: T;
+  refreshTokenExpiresAt?: T;
+  scope?: T;
+  idToken?: T;
+  password?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  user?: T;
+  token?: T;
+  expiresAt?: T;
+  ipAddress?: T;
+  userAgent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  impersonatedBy?: T;
+  activeOrganization?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications_select".
+ */
+export interface VerificationsSelect<T extends boolean = true> {
+  identifier?: T;
+  value?: T;
+  expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "twoFactors_select".
+ */
+export interface TwoFactorsSelect<T extends boolean = true> {
+  user?: T;
+  secret?: T;
+  backupCodes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "passkeys_select".
+ */
+export interface PasskeysSelect<T extends boolean = true> {
+  name?: T;
+  publicKey?: T;
+  user?: T;
+  credentialID?: T;
+  counter?: T;
+  deviceType?: T;
+  backedUp?: T;
+  transports?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apiKeys_select".
+ */
+export interface ApiKeysSelect<T extends boolean = true> {
+  name?: T;
+  start?: T;
+  prefix?: T;
+  key?: T;
+  user?: T;
+  refillInterval?: T;
+  refillAmount?: T;
+  lastRefillAt?: T;
+  enabled?: T;
+  rateLimitEnabled?: T;
+  rateLimitTimeWindow?: T;
+  rateLimitMax?: T;
+  requstCount?: T;
+  remaining?: T;
+  lastRequest?: T;
+  expiresAt?: T;
+  permissions?: T;
+  metadata?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations_select".
+ */
+export interface OrganizationsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  logo?: T;
+  metadata?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  organization?: T;
+  user?: T;
+  team?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "invitations_select".
+ */
+export interface InvitationsSelect<T extends boolean = true> {
+  email?: T;
+  inviter?: T;
+  organization?: T;
+  role?: T;
+  status?: T;
+  expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teams_select".
+ */
+export interface TeamsSelect<T extends boolean = true> {
+  name?: T;
+  organization?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -377,8 +1125,9 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
-  category?: T;
   slug?: T;
+  category?: T;
+  'category-posts'?: T;
   title?: T;
   description?: T;
   color?: T;
@@ -401,6 +1150,7 @@ export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   bio?: T;
+  'author-posts'?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -417,6 +1167,35 @@ export interface CommentsSelect<T extends boolean = true> {
         email?: T;
       };
   post?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  productType?: T;
+  quantity?: T;
+  price?: T;
+  description?: T;
+  image?: T;
+  audioChapters?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audioChapters_select".
+ */
+export interface AudioChaptersSelect<T extends boolean = true> {
+  title?: T;
+  order?: T;
+  duration?: T;
+  audioFile?: T;
+  product?: T;
   updatedAt?: T;
   createdAt?: T;
 }

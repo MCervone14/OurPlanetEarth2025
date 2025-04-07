@@ -1,0 +1,18 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@layer utilities {
+    .table {
+        display: block;
+    }
+}
+
+.bg-card {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

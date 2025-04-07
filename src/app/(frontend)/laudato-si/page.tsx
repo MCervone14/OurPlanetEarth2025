@@ -1,10 +1,9 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import LaudatoSiCard from '@/components/features/laudato-si/laudato-si-card'
+import LaudatoSiCard from '@/components/features/cards/laudato-si-card'
 
 const GetCategoriesInfo = async () => {
   const payload = await getPayload({ config: configPromise })
-
   const result = await payload.find({
     collection: 'categories',
   })
@@ -25,9 +24,10 @@ const LaudatoSiPage = async () => {
         Laudato Si Action Platform
       </h1>
       <div className="">
-        {categories.map((category) => (
-          //@ts-ignore
-          <LaudatoSiCard key={category.id} category={category} />
+        {categories.map((category, idx) => (
+          <div key={idx}>
+            <LaudatoSiCard category={category} />
+          </div>
         ))}
       </div>
     </div>

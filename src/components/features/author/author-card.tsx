@@ -10,10 +10,7 @@ const AuthorCard = ({ author }: AuthorProps) => {
   const authorImage = typeof author.image === 'object' ? author.image : null
 
   return (
-    <div
-      key={author.id}
-      className="rounded-xl shadow-lg bg-white w-full h-fit relative mt-8 lg:min-h-[620px]"
-    >
+    <div className="rounded-xl shadow-lg bg-white w-full h-fit relative mt-8 lg:min-h-[620px]">
       <div
         className={`flex flex-col w-full h-full ${author.id % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
       >
@@ -21,6 +18,8 @@ const AuthorCard = ({ author }: AuthorProps) => {
         <Image
           src={authorImage?.url ?? ''}
           alt={authorImage?.altText ?? ''}
+          blurDataURL={authorImage?.url || ''}
+          layout="blur"
           width={600}
           height={200}
           className={`object-cover ${author.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'} lg:min-h-[620px] lg:max-w-[753px]`}

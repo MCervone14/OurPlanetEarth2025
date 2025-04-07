@@ -1,25 +1,20 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { Media } from '@/payload-types'
+import { Post } from '@/payload-types'
 
-interface RecentArticle {
-  article: {
-    id: string
-    slug: string
-    title: string
-    description: string
-    featuredImage: Media
-    publishDate: Date
-    excerpt: string
-  }
+type RecentArticleProps = {
+  article: Post
 }
-const RecentIndividualCard = ({ article }: RecentArticle) => {
+
+const RecentIndividualCard = ({ article }: RecentArticleProps) => {
+  const featuredImage = typeof article.featuredImage === 'object' ? article.featuredImage : null
+
   return (
     <article className="relative shadow-lg bg-white rounded-lg">
       <Image
         key={article.id}
-        src={article.featuredImage.url as string}
+        src={featuredImage?.url ?? ''}
         alt={article.title}
         width={500}
         height={500}

@@ -8,13 +8,11 @@ const Footer = () => {
   const pathname = usePathname()
 
   if (pathname === '/') {
-    return <CTAFooter />
+    return <CTAFooter className="max-w-7xl mx-auto" />
   } else if (pathname.startsWith('/articles/')) {
-    return (
-      <div className="max-w-6xl mx-auto ">
-        <SimpleFooter />
-      </div>
-    )
+    return <SimpleFooter className="max-w-6xl mx-auto" />
+  } else if (pathname.startsWith('/profile')) {
+    return <SimpleFooter className="max-w-xl mx-auto rounded-t-xl" />
   } else {
     return <SimpleFooter />
   }

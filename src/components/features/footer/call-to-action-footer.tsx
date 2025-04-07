@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Logo from '@/components/features/header/logo'
 import { footerLinks } from '@/components/features/footer/footer-links'
+import { cn } from '@/lib/utils'
 
-export default function CTAFooter() {
+export default function CTAFooter({ className }: { className?: string }) {
   return (
-    <footer className="w-full py-12 bg-green-50">
+    <footer className={cn(`w-full py-12 bg-green-50 mt-4`, className)}>
       <div className="container px-4 mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">
@@ -16,12 +17,14 @@ export default function CTAFooter() {
             Fight for Climate Change
           </h2>
           <div className="flex justify-center gap-4">
-            <Button size="lg" className="bg-blue-900 text-white cursor-pointer hover:bg-blue-800">
-              Sign Up
-            </Button>
+            <Link href={'/auth/sign-up'}>
+              <Button size="lg" className="bg-blue-900 text-white cursor-pointer hover:bg-blue-800">
+                Register
+              </Button>
+            </Link>
             <Link href="https://donate.stripe.com/test_bIY5nacC66fMeD65kk" target="_blank">
               <Button size="lg" className="bg-blue-900 text-white cursor-pointer hover:bg-blue-800">
-                DONATE
+                Donate
               </Button>
             </Link>
           </div>

@@ -1,18 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useContext, useState, useActionState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
+import type { AuthLocalization } from '@/lib/auth-localization'
+import type { SettingsCardClassNames } from '@/components/features/cards/settings-card'
+import { Input } from '@/components/ui/input'
+import { Loader2 } from 'lucide-react'
 
 const CommentForm = ({ articleId }: { articleId: number }) => {
+  const {
+    hooks: { useSession },
+  } = useContext(AuthUIContext)
+
+  const { data: sessionData } = useSession()
   const router = useRouter()
   const [content, setContent] = useState('')
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [name, setName] = useState(sessionData?.user?.name || '')
+  const [email, setEmail] = useState(sessionData?.user?.email || '')
   const [message, setMessage] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const handleSubmit = async () => {
     const response = await fetch('/api/comments', {
       method: 'POST',
       headers: {
@@ -25,11 +34,12 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
         comments: Number(articleId),
       }),
     })
+
     const result = await response.json()
 
     if (response.ok) {
-      setName('')
-      setEmail('')
+      setName(sessionData?.user?.name || '')
+      setEmail(sessionData?.user?.email || '')
       setContent('')
       setMessage('')
       router.refresh()
@@ -41,10 +51,12 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
     }
   }
 
+  const [state, formAction, isSubmitting] = useActionState(handleSubmit, null)
+
   return (
     <div className="mt-12">
       <h3 className="text-xl font-bold mb-6">Leave a Reply</h3>
-      <form onSubmit={handleSubmit}>
+      <form action={formAction}>
         <div className="mb-4">
           <label htmlFor="comment" className="block mb-2">
             Comment <span className="text-red-500">*</span>
@@ -62,10 +74,10 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
             <label htmlFor="name" className="block mb-2">
               Name <span className="text-red-500">*</span>
             </label>
-            <input
+            <Input
               type="text"
               id="name"
-              value={name}
+              defaultValue={sessionData?.user.name || ''}
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full border border-gray-300 p-2"
@@ -75,10 +87,10 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
             <label htmlFor="email" className="block mb-2">
               Email <span className="text-red-500">*</span>
             </label>
-            <input
+            <Input
               type="email"
               id="email"
-              value={email}
+              defaultValue={sessionData?.user.email || ''}
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full border border-gray-300 p-2"
@@ -86,12 +98,16 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
           </div>
           {message && <div className="text-red-500">{message}</div>}
         </div>
-        <button
+        <Button
           type="submit"
-          className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 font-medium"
+          className="bg-green-800 hover:bg-green-700 text-secondary px-6 py-3 font-medium cursor-pointer w-[125px]"
         >
-          Post Comment
-        </button>
+          {isSubmitting ? (
+            <Loader2 className={'w-5 h-5 flex item-center justify-center animate-spin'} />
+          ) : (
+            'Post Comment'
+          )}
+        </Button>
       </form>
     </div>
   )
