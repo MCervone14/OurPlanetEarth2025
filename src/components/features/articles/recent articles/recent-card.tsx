@@ -16,8 +16,9 @@ const RecentIndividualCard = ({ article }: RecentArticleProps) => {
         key={article.id}
         src={featuredImage?.url ?? ''}
         alt={article.title}
-        width={500}
-        height={500}
+        width={featuredImage?.width ?? 0}
+        height={featuredImage?.height ?? 0}
+        unoptimized={true}
         className="aspect-[4/3] object-center object-cover rounded"
       />
 

@@ -27,6 +27,7 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           alt={featuredImage?.altText ?? ''}
           width={1250}
           height={800}
+          unoptimized={true}
           placeholder="blur"
           blurDataURL={featuredImage?.url ?? ''}
           className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}
