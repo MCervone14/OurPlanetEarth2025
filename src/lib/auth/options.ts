@@ -91,8 +91,8 @@ export type BetterAuthPlugins = typeof betterAuthPlugins
 
 export const betterAuthOptions: PayloadBetterAuthOptions = {
   appName: 'ourplanetearth',
-  baseURL: 'http://localhost:5000',
-  trustedOrigins: ['http://localhost:5000'],
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL as string,
+  trustedOrigins: [process.env.NEXT_PUBLIC_SERVER_URL as string],
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
