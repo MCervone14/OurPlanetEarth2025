@@ -25,8 +25,8 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
         <Image
           src={featuredImage?.url ?? ''}
           alt={featuredImage?.altText ?? ''}
-          width={featuredImage?.width ?? 0}
-          height={featuredImage?.height ?? 0}
+          width={1250}
+          height={800}
           placeholder="blur"
           blurDataURL={featuredImage?.url ?? ''}
           className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}

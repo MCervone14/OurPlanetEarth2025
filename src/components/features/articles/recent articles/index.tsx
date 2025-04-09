@@ -8,6 +8,7 @@ const getRecentPosts = async () => {
   const articles = await payload.find({
     collection: 'posts',
     sort: '-publishDate',
+    depth: 2,
     limit: 11,
   })
 

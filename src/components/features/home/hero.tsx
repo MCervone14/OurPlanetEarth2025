@@ -9,7 +9,7 @@ const getFeaturedPost = async () => {
     collection: 'posts',
     sort: '-publishDate',
     limit: 1,
-    depth: 1,
+    depth: 2,
   })
 
   return articles.docs
@@ -17,6 +17,7 @@ const getFeaturedPost = async () => {
 
 const HomeCover = async () => {
   const article = await getFeaturedPost()
+
   const featuredImage =
     typeof article[0]?.featuredImage === 'object' ? article[0].featuredImage : null
   return (
