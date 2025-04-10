@@ -70,13 +70,13 @@ export default buildConfig({
       },
       bucket: process.env.S3_BUCKET as string,
       config: {
+        forcePathStyle: true,
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
         },
         region: process.env.S3_REGION,
         endpoint: process.env.S3_ENDPOINT,
-        forcePathStyle: true,
       },
     }),
   ],

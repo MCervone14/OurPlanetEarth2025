@@ -6,8 +6,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: process.env.S3_ENDPOINT,
-        pathname: '/storage/v1/s3/our-planet-earth/*',
+        hostname: process.env.SUPA_PROJECT_URL,
+        pathname: '/storage/v1/object/sign/our-planet-earth/media/*',
       },
       {
         protocol: 'http',
