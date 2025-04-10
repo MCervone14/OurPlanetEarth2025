@@ -13,10 +13,9 @@ import {
   inferAdditionalFields,
 } from 'better-auth/client/plugins'
 import { toast } from 'sonner'
-import { resetPassword } from 'better-auth/api'
 
 export const authClient = createAuthClient({
-  baseURL: 'http://localhost:5000',
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   // baseURL: `${process.env.BETTER_AUTH_URL}`, // the base url of your auth server
   plugins: [
     twoFactorClient({
@@ -50,16 +49,6 @@ export const authClient = createAuthClient({
   },
 })
 
-export const {
-  signUp,
-  forgetPassword,
-  signIn,
-  signOut,
-  useSession,
-  getSession,
-  organization,
-  useListOrganizations,
-  useActiveOrganization,
-} = authClient
+export const { signUp, forgetPassword, signIn, signOut, useSession } = authClient
 
 authClient.$store.listen('$sessionSignal', async () => {})
