@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -22,7 +21,7 @@ const HomeCover = async () => {
     typeof article[0]?.featuredImage === 'object' ? article[0].featuredImage : null
   return (
     <section className="flex relative flex-col h- w-full px-4">
-      <Image
+      <img
         src={featuredImage?.url ?? ''}
         alt={featuredImage?.altText ?? ''}
         width={featuredImage?.width ?? 0}
