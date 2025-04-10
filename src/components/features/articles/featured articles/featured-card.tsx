@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post, Category } from '@/payload-types'
@@ -22,14 +21,11 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           {format(new Date(article?.publishDate), 'MMMM dd, yyyy')}
         </div>
         {/*Image Side of Featured Card*/}
-        <Image
+        <img
           src={featuredImage?.url ?? ''}
           alt={featuredImage?.altText ?? ''}
           width={1250}
           height={800}
-          unoptimized={true}
-          placeholder="blur"
-          blurDataURL={featuredImage?.url ?? ''}
           className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}
         />
         {/*Text Side of Featured Card*/}
@@ -39,7 +35,7 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
               <div
                 className={`flex items-center ${Number(article.id) % 2 === 0 ? 'lg:justify-end' : ''} `}
               >
-                <Image
+                <img
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}
                   width={64}
