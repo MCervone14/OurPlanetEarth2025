@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post, Category } from '@/payload-types'
@@ -21,11 +22,14 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           {format(new Date(article?.publishDate), 'MMMM dd, yyyy')}
         </div>
         {/*Image Side of Featured Card*/}
-        <img
+        <Image
           src={featuredImage?.url ?? ''}
           alt={featuredImage?.altText ?? ''}
           width={1250}
           height={800}
+          layout="blur"
+          blurDataURL={featuredImage?.url ?? ''}
+          unoptimized
           className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}
         />
         {/*Text Side of Featured Card*/}

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post } from '@/payload-types'
@@ -11,12 +12,15 @@ const RecentIndividualCard = ({ article }: RecentArticleProps) => {
 
   return (
     <article className="relative shadow-lg bg-white rounded-lg">
-      <img
+      <Image
+        layout="blur"
+        blurDataURL={featuredImage?.url ?? ''}
         key={article.id}
         src={featuredImage?.url ?? ''}
         alt={article.title}
         width={featuredImage?.width ?? 0}
         height={featuredImage?.height ?? 0}
+        unoptimized
         className="aspect-[4/3] object-center object-cover rounded"
       />
 
