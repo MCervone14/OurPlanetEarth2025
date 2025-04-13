@@ -22,6 +22,12 @@ export const Authors: CollectionConfig = {
       required: true,
     },
     {
+      name: 'image-blur-url',
+      label: 'Author Image blur',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'bio',
       label: 'Bio',
       type: 'textarea',
