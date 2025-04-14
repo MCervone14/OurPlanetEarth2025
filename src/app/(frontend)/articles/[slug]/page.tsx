@@ -38,7 +38,8 @@ export async function generateMetadata(
   { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const article = await GetArticle(params.slug)
+  const slug = (await params).slug
+  const article = await GetArticle(slug)
 
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
 
