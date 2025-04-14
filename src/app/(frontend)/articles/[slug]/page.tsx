@@ -35,7 +35,7 @@ const GetArticle = cache(async (slug: string) => {
 
 // Generating the Metadata for the article
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const slug = (await params).slug
