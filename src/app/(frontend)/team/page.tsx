@@ -2,6 +2,10 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import AuthorCard from '@/components/features/author/author-card'
 
+export const metadata = {
+  title: 'Team | Our Planet Earth',
+}
+
 const GetAuthorInfo = async () => {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({

@@ -1,5 +1,9 @@
-import { LoginModal } from '@/components/features/auth/LoginModal'
 import SignInForm from '@/components/features/auth/sign-in'
+
+export const metadata = {
+  title: 'Sign-in | Our Planet Earth',
+  description: 'Sign-in to your Our Planet Earth account',
+}
 
 const LoginPage = async () => {
   return (

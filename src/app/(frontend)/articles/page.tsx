@@ -2,9 +2,13 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import FeaturedIndividualCard from '@/components/features/articles/featured articles/featured-card'
 import { PaginationComponent } from '@/components/features/pagination'
+import { cache } from 'react'
 
-const payload = await getPayload({ config })
-const GetAllArticles = async (page: string) => {
+export const metadata = {
+  title: 'Articles | Our Planet Earth',
+}
+const GetAllArticles = cache(async (page: string) => {
+  const payload = await getPayload({ config })
   return await payload.find({
     collection: 'posts',
     sort: '-publishDate',
@@ -12,7 +16,7 @@ const GetAllArticles = async (page: string) => {
     page: Number(page),
     pagination: true,
   })
-}
+})
 
 const ArticlesPage = async ({
   searchParams,

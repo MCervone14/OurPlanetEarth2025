@@ -2,6 +2,11 @@ import { ResetPass } from '@/components/features/auth/reset-password'
 import Image from 'next/image'
 import { AuthCard } from '@/components/features/auth/auth-card'
 
+export const metadata = {
+  title: 'Reset-Password | Our Planet Earth',
+  description: 'Reset your password to your Our Planet Earth account',
+}
+
 const ResetPage = async () => {
   return (
     <div>

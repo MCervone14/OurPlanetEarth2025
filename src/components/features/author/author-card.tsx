@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { Author } from '@/payload-types'
+import ImageWithBlur from '@/components/features/images/ImageWithBlur'
 
 type AuthorProps = {
   author: Author
@@ -14,16 +15,17 @@ const AuthorCard = ({ author }: AuthorProps) => {
       <div
         className={`flex flex-col w-full h-full ${author.id % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
       >
+        <ImageWithBlur authorId={author.id} author={authorImage} />
         {/*Image Side of Category Card*/}
-        <Image
-          src={authorImage?.url ?? ''}
-          alt={authorImage?.altText ?? ''}
-          blurDataURL={authorImage?.url || ''}
-          layout="blur"
-          width={600}
-          height={200}
-          className={`object-cover ${author.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'} lg:min-h-[620px] lg:max-w-[753px]`}
-        />
+        {/*<Image*/}
+        {/*  src={authorImage?.url ?? ''}*/}
+        {/*  alt={authorImage?.altText ?? ''}*/}
+        {/*  blurDataURL={authorImage?.url || ''}*/}
+        {/*  layout="blur"*/}
+        {/*  width={600}*/}
+        {/*  height={200}*/}
+        {/*  className={`object-cover ${author.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'} lg:min-h-[620px] lg:max-w-[753px]`}*/}
+        {/*/>*/}
         {/*Text Side of Featured Card*/}
         <div className="flex-col p-5 w-full">
           <div className="flex flex-col justify-between">

@@ -2,6 +2,12 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import LaudatoSiCard from '@/components/features/cards/laudato-si-card'
 
+export const metadata = {
+  title: "Laudato-Si' | Our Planet Earth",
+  description:
+    '"Laudato Si\'" is a 2015 encyclical by Pope Francis that focuses on care for the environment and all people, emphasizing the interconnectedness of humanity and nature.',
+}
+
 const GetCategoriesInfo = async () => {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({

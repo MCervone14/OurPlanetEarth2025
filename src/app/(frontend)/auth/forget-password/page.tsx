@@ -1,6 +1,11 @@
 import { AuthCard } from '@/components/features/auth/auth-card'
 import Image from 'next/image'
 
+export const metadata = {
+  title: 'Forget-Password | Our Planet Earth',
+  description: 'Recover your password to your Our Planet Earth account',
+}
+
 const ForgetPassPage = async () => {
   return (
     <div className="mx-auto w-full max-w-7xl  self-center px-4 sm:px-0">

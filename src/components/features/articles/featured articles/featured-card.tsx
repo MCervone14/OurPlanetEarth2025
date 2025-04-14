@@ -1,13 +1,15 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post, Category } from '@/payload-types'
 import { ArrowRightIcon, CalendarIcon, FileIcon } from 'lucide-react'
 import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import { Separator } from '@/components/ui/separator'
+import ImageWithBlur from '@/components/features/images/ImageWithBlur'
 
 const FeaturedIndividualCard = ({ article }: { article: Post }) => {
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
+  const featuredBlurredImage =
+    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
   const categories = typeof article?.categories === 'object' ? article.categories : null
   const author = typeof article?.author === 'object' ? article.author : null
   const authorImage = typeof author?.image === 'object' ? author?.image : null
@@ -22,17 +24,11 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           {format(new Date(article?.publishDate), 'MMMM dd, yyyy')}
         </div>
         {/*Image Side of Featured Card*/}
-        <Image
-          src={featuredImage?.url ?? ''}
-          alt={featuredImage?.altText ?? ''}
-          width={1250}
-          height={800}
-          layout="blur"
-          blurDataURL={featuredImage?.url ?? ''}
-          unoptimized
-          className={`object-cover w-full lg:max-w-1/2 ${Number(article.id) % 2 === 0 ? 'rounded-t-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'} `}
+        <ImageWithBlur
+          articleId={article.id}
+          featuredImage={featuredImage}
+          featuredBlurredImage={featuredBlurredImage}
         />
-        {/*Text Side of Featured Card*/}
         <div className="flex-col p-5 lg:max-w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">

@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post } from '@/payload-types'
+import ImageWithBlur from '@/components/features/images/ImageWithBlur'
 
 type RecentArticleProps = {
   article: Post
@@ -9,19 +9,15 @@ type RecentArticleProps = {
 
 const RecentIndividualCard = ({ article }: RecentArticleProps) => {
   const featuredImage = typeof article.featuredImage === 'object' ? article.featuredImage : null
+  const featuredBlurredImage =
+    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
 
   return (
     <article className="relative shadow-lg bg-white rounded-lg">
-      <Image
-        layout="blur"
-        blurDataURL={featuredImage?.url ?? ''}
-        key={article.id}
-        src={featuredImage?.url ?? ''}
-        alt={article.title}
-        width={featuredImage?.width ?? 0}
-        height={featuredImage?.height ?? 0}
-        unoptimized
-        className="aspect-[4/3] object-center object-cover rounded"
+      <ImageWithBlur
+        featuredImage={featuredImage}
+        featuredBlurredImage={featuredBlurredImage}
+        className={'aspect-[4/3] object-center object-cover rounded'}
       />
 
       <div className="p-5">

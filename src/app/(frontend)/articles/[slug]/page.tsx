@@ -12,7 +12,9 @@ import Comments from '@/components/features/comments'
 import { Category } from '@/payload-types'
 import { SignedIn } from '@/components/features/auth/signed-in'
 import { SignedOut } from '@/components/features/auth/signed-out'
+import { Metadata, ResolvingMetadata } from 'next'
 
+// Fetching the correct article
 const GetArticle = cache(async (slug: string) => {
   const payload = await getPayload({ config: configPromise })
 
@@ -31,6 +33,33 @@ const GetArticle = cache(async (slug: string) => {
   return result.docs?.[0] || null
 })
 
+// Generating the Metadata for the article
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const article = await GetArticle(params.slug)
+
+  const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
+
+  if (!article) {
+    return {
+      title: 'Article not found',
+    }
+  }
+
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: `${article.title} | Our Planet Earth`,
+    description: article.excerpt,
+    openGraph: {
+      images: [featuredImage?.url || '', ...previousImages],
+    },
+  }
+}
+
+// Displaying the Article on the page.
 const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug
   const article = await GetArticle(slug)

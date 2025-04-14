@@ -675,6 +675,7 @@ export interface Post {
       }
   )[];
   featuredImage: number | Media;
+  'image-blur-url'?: (number | null) | Media;
   categories: (number | Category)[];
   excerpt: string;
   comments?: (number | Comment)[] | null;
@@ -689,6 +690,7 @@ export interface Author {
   id: number;
   name: string;
   image: number | Media;
+  'image-blur-url'?: (number | null) | Media;
   bio: string;
   'author-posts'?: (number | Post)[] | null;
   updatedAt: string;
@@ -709,6 +711,7 @@ export interface Category {
     | 'Ecological Education'
     | 'Ecological Spirituality'
     | 'Community Involvement';
+  'image-blur-url'?: (number | null) | Media;
   'category-posts'?: (number | Post)[] | null;
   title: string;
   description: string;
@@ -1114,6 +1117,7 @@ export interface PostsSelect<T extends boolean = true> {
             };
       };
   featuredImage?: T;
+  'image-blur-url'?: T;
   categories?: T;
   excerpt?: T;
   comments?: T;
@@ -1127,6 +1131,7 @@ export interface PostsSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   category?: T;
+  'image-blur-url'?: T;
   'category-posts'?: T;
   title?: T;
   description?: T;
@@ -1149,6 +1154,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
   image?: T;
+  'image-blur-url'?: T;
   bio?: T;
   'author-posts'?: T;
   updatedAt?: T;
