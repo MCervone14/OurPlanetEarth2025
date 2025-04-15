@@ -6,8 +6,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://tumrjcqqvtxgmiasfgte.supabase.co',
-        pathname: '/storage/v1/object/sign/our-planet-earth/media/*',
+        hostname: 'tumrjcqqvtxgmiasfgte.supabase.co',
+        pathname: '/storage/v1/object/sign/our-planet-earth/media/**',
       },
       {
         protocol: 'http',
