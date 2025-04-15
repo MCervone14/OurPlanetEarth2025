@@ -11,8 +11,8 @@ import Comments from '@/components/features/comments'
 import { Category } from '@/payload-types'
 import { SignedIn } from '@/components/features/auth/signed-in'
 import { SignedOut } from '@/components/features/auth/signed-out'
+import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
-import ImageWithBlur from '@/components/features/images/ImageWithBlur'
 
 // Fetching the correct article
 const GetArticle = cache(async (slug: string) => {
@@ -79,10 +79,16 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
       <p className="absolute border-2 border-white top-1 right-1 bg-green-950 text-white p-2">
         {format(new Date(article.publishDate), 'PPPP')}
       </p>
-      <ImageWithBlur
-        featuredImage={featuredImage}
-        featuredBlurredImage={featuredBlurredImage}
+      <Image
+        src={featuredImage?.url ?? ''}
+        overrideSrc={featuredImage?.url ?? ''}
+        alt={featuredImage?.altText ?? ''}
+        width={featuredImage?.width ?? 0}
+        height={featuredImage?.height ?? 0}
+        blurDataURL={featuredBlurredImage?.url ?? ''}
         className={'min-h-[450px] min-w-6xl'}
+        layout="blur"
+        loading={'eager'}
       />
       <div className="w-full border-4 text-xs lg:text-lg border-green-950">
         <ul className="flex justify-start items-center">

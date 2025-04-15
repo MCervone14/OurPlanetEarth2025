@@ -30,7 +30,7 @@ const TeamPage = async () => {
       <div>
         {authors.map((author, idx) => (
           <div key={idx}>
-            <AuthorCard author={author} />
+            <AuthorCard author={author} index={idx} />
           </div>
         ))}
       </div>

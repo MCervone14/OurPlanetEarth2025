@@ -6,7 +6,7 @@ import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 
-const FeaturedIndividualCard = ({ article }: { article: Post }) => {
+const FeaturedIndividualCard = ({ article, index }: { article: Post; index: number }) => {
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
   const featuredBlurredImage =
     typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
@@ -31,14 +31,14 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           width={featuredImage?.width ?? 0}
           height={featuredImage?.height ?? 0}
           blurDataURL={featuredBlurredImage?.url ?? ''}
-          className={`w-full min-h-full ${article.id % 2 === 0 ? 'rounded-t-xl rounded-b-none rounded-l-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-b-none rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'}`}
+          className={`w-full min-h-full ${index % 2 === 0 ? 'rounded-t-xl rounded-b-none rounded-l-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-b-none rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'}`}
           layout="blur"
           loading={'eager'}
         />
         <div className="flex-col p-5 lg:max-w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
-              <div className={`flex items-center ${article.id % 2 === 0 ? 'lg:justify-end' : ''} `}>
+              <div className={`flex items-center ${index % 2 === 0 ? 'lg:justify-end' : ''} `}>
                 <img
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}

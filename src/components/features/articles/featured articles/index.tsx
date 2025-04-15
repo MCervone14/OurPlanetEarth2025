@@ -22,9 +22,9 @@ const FeaturedSection = async () => {
     <section className="w-full mt-16 flex flex-col items-center justify-center px-4">
       <div className="grid grid-cols-1 gap-6">
         {articles
-          .map((article) => (
+          .map((article, idx) => (
             <section className="" key={article.id}>
-              <FeaturedIndividualFeatureCard article={article} />
+              <FeaturedIndividualFeatureCard article={article} index={idx} />
             </section>
           ))
           .slice(1, 5)}

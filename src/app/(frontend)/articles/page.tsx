@@ -39,7 +39,7 @@ const ArticlesPage = async ({
         </h1>
         <ul className="w-full list-none p-5 md:p-none">
           {data.docs.map((article, idx) => (
-            <FeaturedIndividualCard key={idx} article={article} />
+            <FeaturedIndividualCard key={idx} article={article} index={idx} />
           ))}
         </ul>
       </div>

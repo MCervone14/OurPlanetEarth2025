@@ -4,9 +4,10 @@ import Image from 'next/image'
 
 type AuthorProps = {
   author: Author
+  index: number
 }
 
-const AuthorCard = ({ author }: AuthorProps) => {
+const AuthorCard = ({ author, index }: AuthorProps) => {
   const authorImage = typeof author.image === 'object' ? author.image : null
 
   return (
@@ -22,7 +23,7 @@ const AuthorCard = ({ author }: AuthorProps) => {
           height={authorImage?.height ?? 0}
           blurDataURL={authorImage?.url ?? ''}
           layout="blur"
-          className={`w-full h-full object-cover lg:min-h-[620px] lg:max-w-[753px]${author!.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'}`}
+          className={`w-full h-full object-cover lg:min-h-[620px] lg:max-w-[753px]${index % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'}`}
           loading={'eager'}
         />
         <div className="flex-col p-5 w-full">
