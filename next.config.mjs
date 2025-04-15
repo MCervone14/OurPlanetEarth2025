@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: process.env.SUPA_PROJECT_URL,
+        hostname: 'https://tumrjcqqvtxgmiasfgte.supabase.co',
         pathname: '/storage/v1/object/sign/our-planet-earth/media/*',
       },
       {
