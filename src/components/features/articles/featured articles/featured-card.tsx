@@ -4,7 +4,7 @@ import { Post, Category } from '@/payload-types'
 import { ArrowRightIcon, CalendarIcon, FileIcon } from 'lucide-react'
 import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import { Separator } from '@/components/ui/separator'
-import ImageWithBlur from '@/components/features/images/ImageWithBlur'
+import Image from 'next/image'
 
 const FeaturedIndividualCard = ({ article }: { article: Post }) => {
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
@@ -24,17 +24,21 @@ const FeaturedIndividualCard = ({ article }: { article: Post }) => {
           {format(new Date(article?.publishDate), 'MMMM dd, yyyy')}
         </div>
         {/*Image Side of Featured Card*/}
-        <ImageWithBlur
-          articleId={article.id}
-          featuredImage={featuredImage}
-          featuredBlurredImage={featuredBlurredImage}
+        <Image
+          src={featuredImage?.url ?? ''}
+          overrideSrc={featuredImage?.url ?? ''}
+          alt={featuredImage?.altText ?? ''}
+          width={featuredImage?.width ?? 0}
+          height={featuredImage?.height ?? 0}
+          blurDataURL={featuredBlurredImage?.url ?? ''}
+          className={`w-full min-h-full ${article.id % 2 === 0 ? 'rounded-t-xl rounded-b-none rounded-l-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-b-none rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'}`}
+          layout="blur"
+          loading={'eager'}
         />
         <div className="flex-col p-5 lg:max-w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
-              <div
-                className={`flex items-center ${Number(article.id) % 2 === 0 ? 'lg:justify-end' : ''} `}
-              >
+              <div className={`flex items-center ${article.id % 2 === 0 ? 'lg:justify-end' : ''} `}>
                 <img
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import SerializedLexical from '@/components/features/lexical/serialize-lexical'
-import Image from 'next/image'
 import { FileIcon } from 'lucide-react'
 import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import Comments from '@/components/features/comments'
@@ -13,6 +12,7 @@ import { Category } from '@/payload-types'
 import { SignedIn } from '@/components/features/auth/signed-in'
 import { SignedOut } from '@/components/features/auth/signed-out'
 import { Metadata, ResolvingMetadata } from 'next'
+import ImageWithBlur from '@/components/features/images/ImageWithBlur'
 
 // Fetching the correct article
 const GetArticle = cache(async (slug: string) => {
@@ -66,10 +66,12 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
   const article = await GetArticle(slug)
 
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
+  const featuredBlurredImage =
+    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
   const categories = typeof article?.categories === 'object' ? article.categories : null
 
   if (!article) {
-    return <p>No Article Found!</p>
+    return <p className="text-center w-full text-2xl">No Article Found!</p>
   }
 
   return (
@@ -77,12 +79,10 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
       <p className="absolute border-2 border-white top-1 right-1 bg-green-950 text-white p-2">
         {format(new Date(article.publishDate), 'PPPP')}
       </p>
-      <Image
-        src={featuredImage?.url ?? ''}
-        alt={featuredImage?.altText ?? ''}
-        width={featuredImage?.width ?? 0}
-        height={featuredImage?.height ?? 0}
-        className="object-cover min-h-[450px] min-w-6xl"
+      <ImageWithBlur
+        featuredImage={featuredImage}
+        featuredBlurredImage={featuredBlurredImage}
+        className={'min-h-[450px] min-w-6xl'}
       />
       <div className="w-full border-4 text-xs lg:text-lg border-green-950">
         <ul className="flex justify-start items-center">

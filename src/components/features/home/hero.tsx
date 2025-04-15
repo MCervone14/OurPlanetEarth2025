@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import ImageWithBlur from '../images/ImageWithBlur'
+import Image from 'next/image'
 
 const payload = await getPayload({ config })
 const getFeaturedPost = async () => {
@@ -26,7 +26,17 @@ const HomeCover = async () => {
 
   return (
     <section className="flex relative flex-col h- w-full px-4">
-      <ImageWithBlur featuredImage={featuredImage} featuredBlurredImage={featuredBlurredImage} />
+      <Image
+        src={featuredImage?.url ?? ''}
+        overrideSrc={featuredImage?.url ?? ''}
+        alt={featuredImage?.altText ?? ''}
+        width={featuredImage?.width ?? 0}
+        height={featuredImage?.height ?? 0}
+        blurDataURL={featuredBlurredImage?.url ?? ''}
+        layout="blur"
+        className="w-full h-full object-cover"
+        loading={'eager'}
+      />
       <div className="w-full mx-auto p-6 flex flex-col items-start bottom-0 z-10 text-white bg-slate-900 ">
         <Link href={`/articles/${article[0]?.slug}`} className="my-3 hover:text-green-600">
           <h1 className="font-bold text-lg md:text-2xl lg:text-4xl">

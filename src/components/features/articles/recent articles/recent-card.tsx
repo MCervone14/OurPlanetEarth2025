@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post } from '@/payload-types'
-import ImageWithBlur from '@/components/features/images/ImageWithBlur'
+import Image from 'next/image'
 
 type RecentArticleProps = {
   article: Post
@@ -14,12 +14,16 @@ const RecentIndividualCard = ({ article }: RecentArticleProps) => {
 
   return (
     <article className="relative shadow-lg bg-white rounded-lg">
-      <ImageWithBlur
-        featuredImage={featuredImage}
-        featuredBlurredImage={featuredBlurredImage}
+      <Image
+        src={featuredImage?.url ?? ''}
+        overrideSrc={featuredImage?.url ?? ''}
+        alt={featuredImage?.altText ?? ''}
+        width={featuredImage?.width ?? 0}
+        height={featuredImage?.height ?? 0}
+        blurDataURL={featuredBlurredImage?.url ?? ''}
         className={'aspect-[4/3] object-center object-cover rounded'}
+        layout="blur"
       />
-
       <div className="p-5">
         {/*{article.categories.map((category) => (*/}
         {/*  <CategoryTags*/}

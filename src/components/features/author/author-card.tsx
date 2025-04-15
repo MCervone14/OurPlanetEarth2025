@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import { Author } from '@/payload-types'
-import ImageWithBlur from '@/components/features/images/ImageWithBlur'
+import Image from 'next/image'
 
 type AuthorProps = {
   author: Author
@@ -14,7 +14,17 @@ const AuthorCard = ({ author }: AuthorProps) => {
       <div
         className={`flex flex-col w-full h-full ${author.id % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
       >
-        <ImageWithBlur authorId={author.id} author={authorImage} />
+        <Image
+          src={authorImage?.url ?? ''}
+          overrideSrc={authorImage?.url ?? ''}
+          alt={authorImage?.altText ?? ''}
+          width={authorImage?.width ?? 0}
+          height={authorImage?.height ?? 0}
+          blurDataURL={authorImage?.url ?? ''}
+          layout="blur"
+          className={`w-full h-full object-cover lg:min-h-[620px] lg:max-w-[753px]${author!.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'}`}
+          loading={'eager'}
+        />
         <div className="flex-col p-5 w-full">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
