@@ -1,6 +1,4 @@
-import { generateVerifyEmailUrl } from 'payload-auth/better-auth/plugin'
 import type {
-  BetterAuthReturn,
   PayloadBetterAuthOptions,
   PayloadBetterAuthPluginOptions,
 } from 'payload-auth/better-auth'
@@ -18,7 +16,7 @@ import {
   twoFactor,
 } from 'better-auth/plugins'
 import { passkey } from 'better-auth/plugins/passkey'
-import { CollectionConfig, getPayload } from 'payload'
+import { getPayload } from 'payload'
 import config from '@payload-config'
 
 export const betterAuthPlugins = [
@@ -120,10 +118,6 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
       clientSecret: process.env.MICROSOFT_OAUTH_CLIENT_SECRET as string,
       tenantId: 'common',
     },
-    facebook: {
-      clientId: process.env.FACEBOOK_OAUTH_CLIENT_ID as string,
-      clientSecret: process.env.FACEBOOK_OAUTH_CLIENT_SECRET as string,
-    },
   },
   emailVerification: {
     async sendVerificationEmail({ user, url }) {
@@ -191,33 +185,6 @@ export const betterAuthPluginOptions: PayloadBetterAuthPluginOptions = {
     hidden: false,
     adminRoles: ['admin'],
     allowedFields: ['name'],
-    // blockFirstBetterAuthVerificationEmail: true,
-    // collectionOverrides: ({ collection }) => {
-    //   return {
-    //     ...collection,
-    //     auth: {
-    //       ...(typeof collection?.auth === 'object' ? collection.auth : {}),
-    //       verify: {
-    //         generateEmailHTML: async ({ user, req, token }) => {
-    //           const betterAuth = (req.payload as any)
-    //             .betterAuth as BetterAuthReturn<BetterAuthPlugins>
-    //           const authContext = await betterAuth.$context
-    //           const verifyUrl = await generateVerifyEmailUrl({
-    //             userEmail: user.email,
-    //             secret: authContext.secret,
-    //             expiresIn: betterAuth.options?.emailVerification?.expiresIn || 3600,
-    //             verifyRouteUrl: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth/verify-email`,
-    //             callbackURL: '/dashboard',
-    //           })
-    //
-    //           console.log('generateEmailHTML verifyUrl', verifyUrl)
-    //
-    //           return `<p>Verify your email by clicking <a href="${verifyUrl}">here</a></p>`
-    //         },
-    //       },
-    //     },
-    //   } satisfies CollectionConfig
-    //},
   },
   accounts: {
     slug: 'accounts',

@@ -13,7 +13,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -24,7 +23,7 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import { UserButton } from '@/components/features/buttons/user-button'
 import { SignedOut } from '@/components/features/auth/signed-out'
 import { SignedIn } from '@/components/features/auth/signed-in'
-import { HandCoins, Store, UserIcon } from 'lucide-react'
+import { HandCoins, UserIcon } from 'lucide-react'
 
 const Navbar = async () => {
   return (
@@ -33,26 +32,26 @@ const Navbar = async () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="md:hidden mx-4">
-            {' '}
             <HamburgerMenuIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 z-100 bg-white mx-4">
-          <DropdownMenuLabel>Blog Articles</DropdownMenuLabel>
-          <DropdownMenuSeparator className="w-full bg-black/50 mx-auto" />
           <DropdownMenuGroup className="">
-            <DropdownMenuItem className="text-xs hover:bg-green-200">
-              Article of the Month
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-xs hover:bg-green-200">
-              Our Planet Earth Articles
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-xs hover:bg-green-200">
-              Laudato Si Information
-            </DropdownMenuItem>
+            <Link href="/articles">
+              <DropdownMenuItem className="text-xs hover:bg-green-200">
+                Our Planet Earth Articles
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/laudato-si">
+              <DropdownMenuItem className="text-xs hover:bg-green-200">
+                Laudato Si Information
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator className="w-full bg-black/50 mx-auto" />
           </DropdownMenuGroup>
-          <DropdownMenuItem className="text-xs hover:bg-green-200">Sign In</DropdownMenuItem>
+          <Link href="/auth/sign-in">
+            <DropdownMenuItem className="text-xs hover:bg-green-200">Sign In</DropdownMenuItem>
+          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
       {/* End For Mobile View*/}
@@ -63,12 +62,16 @@ const Navbar = async () => {
           <NavigationMenuItem>
             <NavigationMenuTrigger className="bg-gray-100">Blog Articles</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="p-4 md:w-[400px] lg:w-[400px] z-100 bg-white flex items-center">
-                <ListItem href="/articles" title="Articles" className="p-4 hover:bg-green-100">
+              <ul className="p-0 md:w-[400px] lg:w-[400px] z-100 bg-white flex items-center">
+                <ListItem
+                  href="/articles"
+                  title="Articles"
+                  className="p-0 text-xs hover:bg-green-100"
+                >
                   The complete list of Our Planet Earth articles.
                 </ListItem>
                 <ListItem
-                  className="p-4 hover:bg-green-100"
+                  className="p-0 text-xs hover:bg-green-100"
                   href="/laudato-si"
                   title="Learn More About Laudato Si"
                 >

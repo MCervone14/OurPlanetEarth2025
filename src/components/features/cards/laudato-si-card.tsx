@@ -5,24 +5,30 @@ import { Category } from '@/payload-types'
 
 interface LaudatoSiCardProps {
   category: Category
+  index: number
 }
 
-const LaudatoSiCard = ({ category }: LaudatoSiCardProps) => {
-  const CategoryImage = typeof category.image === 'object' ? category.image : null
+const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
+  const categoryImage = typeof category?.image === 'object' ? category?.image : null
+  const categoryBlurredImage =
+    typeof category?.['image-blur-url'] === 'object' ? category?.['image-blur-url'] : null
   const icon = typeof category.icon === 'object' ? category.icon : null
 
   return (
-    <article className="rounded-xl shadow-lg bg-white w-full h-fit relative mt-8 lg:min-h-[620px]">
+    <article className="rounded-xl shadow-lg bg-white w-full h-full relative mt-8">
       <div
         className={`flex flex-col w-full h-full ${Number(category.id) % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
       >
         {/*Image Side of Category Card*/}
         <Image
-          src={CategoryImage?.url ?? ''}
-          alt={CategoryImage?.altText ?? ''}
-          width={CategoryImage?.width ?? 0}
-          height={CategoryImage?.height ?? 0}
-          className={`object-cover ${category.id % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'} lg:min-h-[620px] lg:max-w-[753px]`}
+          src={categoryImage?.url ?? ''}
+          overrideSrc={categoryImage?.url ?? ''}
+          alt={categoryImage?.altText ?? ''}
+          width={categoryImage?.width ?? 0}
+          height={categoryImage?.height ?? 0}
+          layout="blur"
+          blurDataURL={categoryBlurredImage?.url ?? ''}
+          className={`object-cover rounded-t-xl rounded-b-none w-full ${index % 2 === 0 ? 'lg:rounded-l-xl lg:rounded-r-none' : 'lg:rounded-r-xl lg:rounded-l-none'}`}
         />
         {/*Text Side of Featured Card*/}
         <div className="flex-col p-5 w-full">

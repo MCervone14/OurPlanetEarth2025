@@ -22,7 +22,7 @@ export function Providers({ children }: { children: ReactNode }) {
           router.refresh()
         }}
         magicLink={false}
-        providers={['google', 'microsoft', 'facebook']}
+        providers={['google', 'microsoft']}
         basePath="/"
         Link={Link}
         emailVerification={true}
@@ -30,7 +30,6 @@ export function Providers({ children }: { children: ReactNode }) {
         rememberMe={false}
         deleteUser={true}
         avatar={true}
-        username={true}
       >
         {children}
       </AuthUIProvider>

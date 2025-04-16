@@ -95,7 +95,10 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
           <div className="border-r-2 p-5">
             {(categories as Category[])?.map((cat) => (
               <li key={cat.id} className="flex items-center text-center p-0">
-                <Link href={`/category/${cat.slug}`} className="hover:underline flex items-center">
+                <Link
+                  href={`/our-planet-earth-blog/src/app/(frontend)/category/${cat.slug}`}
+                  className="hover:underline flex items-center"
+                >
                   <FileIcon className="mr-1 h-4 w-4 hidden md:block" />
                   {cat.category}
                 </Link>

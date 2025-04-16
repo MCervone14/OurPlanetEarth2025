@@ -10,6 +10,7 @@ const SignInForm = async () => {
             src="/uploads/Grass.jpg"
             blurDataURL={'/uploads/Grass.jpg'}
             alt="Grass"
+            layout="blur"
             fill
             className="object-cover"
           />
@@ -19,6 +20,7 @@ const SignInForm = async () => {
           <Image
             src="/uploads/CrackedEarth.jpg"
             blurDataURL={'/uploads/CrackedEarth.jpg'}
+            layout="blur"
             alt="Cracked Earth"
             className="object-cover"
             fill

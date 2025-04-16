@@ -11,9 +11,9 @@ const AuthorCard = ({ author, index }: AuthorProps) => {
   const authorImage = typeof author.image === 'object' ? author.image : null
 
   return (
-    <div className="rounded-xl shadow-lg bg-white w-full h-fit relative mt-8 lg:min-h-[620px]">
+    <div className="rounded-xl shadow-lg bg-secondary w-full relative">
       <div
-        className={`flex flex-col w-full h-full ${author.id % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
+        className={`flex flex-col w-full h-full ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
       >
         <Image
           src={authorImage?.url ?? ''}
@@ -23,7 +23,7 @@ const AuthorCard = ({ author, index }: AuthorProps) => {
           height={authorImage?.height ?? 0}
           blurDataURL={authorImage?.url ?? ''}
           layout="blur"
-          className={`w-full h-full object-cover lg:min-h-[620px] lg:max-w-[753px]${index % 2 === 0 ? 'rounded-r-xl' : 'rounded-l-xl'}`}
+          className={`w-full h-full object-cover rounded-t-xl rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
           loading={'eager'}
         />
         <div className="flex-col p-5 w-full">

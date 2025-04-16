@@ -120,10 +120,6 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
       tenantId: 'common',
       requireSelectAccount: true,
     },
-    facebook: {
-      clientId: process.env.FACEBOOK_OAUTH_CLIENT_ID as string,
-      clientSecret: process.env.FACEBOOK_OAUTH_CLIENT_SECRET as string,
-    },
   },
   emailVerification: {
     async sendVerificationEmail({ user, url }) {

@@ -13,12 +13,12 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
   const categories = typeof article?.categories === 'object' ? article.categories : null
   const author = typeof article?.author === 'object' ? article.author : null
   const authorImage = typeof author?.image === 'object' ? author?.image : null
+  const authorBlurImage =
+    typeof author?.['image-blur-url'] === 'object' ? author?.['image-blur-url'] : null
 
   return (
     <article className="rounded-xl shadow-lg bg-white relative mt-8 max-w-[650px] lg:max-w-[1250px] mx-auto">
-      <div
-        className={`flex flex-col  ${Number(article.id) % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
-      >
+      <div className={`flex flex-col  ${index % 2 === 0 ? 'lg:flex-row ' : 'lg:flex-row-reverse'}`}>
         <div className="absolute top-0 right-0 z-10 bg-gray-200 px-2 py-1 text-sm t flex justify-center items-center rounded-tr-md">
           <CalendarIcon className="inline-block mr-1 h-4 w-4 " />
           {format(new Date(article?.publishDate), 'MMMM dd, yyyy')}
@@ -31,27 +31,26 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
           width={featuredImage?.width ?? 0}
           height={featuredImage?.height ?? 0}
           blurDataURL={featuredBlurredImage?.url ?? ''}
-          className={`w-full min-h-full ${index % 2 === 0 ? 'rounded-t-xl rounded-b-none rounded-l-xl lg:rounded-t-none lg:rounded-r-xl' : 'rounded-b-none rounded-t-xl lg:rounded-t-none lg:rounded-l-xl'}`}
+          className={`w-full min-h-full rounded-b-none rounded-t-xl lg:rounded-t-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : ' lg:rounded-r-xl'}`}
           layout="blur"
           loading={'eager'}
         />
         <div className="flex-col p-5 lg:max-w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
-              <div className={`flex items-center ${index % 2 === 0 ? 'lg:justify-end' : ''} `}>
-                <img
+              <div className={`flex items-center ${index % 2 === 0 ? '' : 'lg:justify-end'} `}>
+                <Image
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}
+                  layout="blur"
+                  blurDataURL={authorBlurImage?.url ?? ''}
                   width={64}
                   height={64}
                   className="rounded-full mr-3"
                 />
                 <span className="text-sm text-gray-600">
                   by{' '}
-                  <Link
-                    href={`/author/${authorImage?.slug.toLowerCase()}`}
-                    className="hover:underline"
-                  >
+                  <Link href={`/author/${authorImage?.slug}`} className="hover:underline">
                     {author?.name}
                   </Link>
                 </span>
@@ -72,17 +71,29 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
           <div className="w-full border-4 text-xs lg:text-lg border-green-950">
             <ul className="flex justify-between items-center">
               <div className="border-r-2 p-5">
-                {(categories as Category[]).map((cat) => (
-                  <li className="flex items-center text-center p-0" key={cat.id}>
-                    <Link
-                      href={`/category/${cat.category.toLowerCase()}`}
-                      className="hover:underline flex items-center"
-                    >
-                      <FileIcon className="mr-1 h-4 w-4 hidden md:block" />
-                      {cat.category}
-                    </Link>
-                  </li>
-                ))}
+                {(categories as Category[]).map((cat) => {
+                  const catIcon = typeof cat?.icon === 'object' ? cat?.icon : null
+
+                  return (
+                    <li className="flex items-center text-center p-0" key={cat.id}>
+                      <Link
+                        href={`/category/${cat.slug}`}
+                        className="hover:underline flex items-center"
+                      >
+                        <Image
+                          src={catIcon?.url ?? ''}
+                          alt={catIcon?.altText ?? ''}
+                          layout="blur"
+                          blurDataURL={catIcon?.url ?? ''}
+                          width={32}
+                          height={32}
+                          className="rounded-full mr-3"
+                        />
+                        {cat.category}
+                      </Link>
+                    </li>
+                  )
+                })}
               </div>
               <div>
                 <li className="h-full p-2">

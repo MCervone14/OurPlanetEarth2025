@@ -27,6 +27,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { User, type UserClassNames } from '@/components/features/misc/user'
+import { AuthCard } from '../auth/auth-card'
+import { signOut } from '@/lib/auth-client'
 
 export interface UserButtonClassNames {
   base?: string
@@ -215,12 +217,21 @@ export function UserButton({
               </Link>
             )}
 
-            <Link href={`${basePath}/${viewPaths.signOut}`}>
-              <DropdownMenuItem className={classNames?.content?.menuItem}>
-                <LogOutIcon />
+            <Link href={``}>
+              <Button
+                className="w-full flex justify-start p-0"
+                variant="ghost"
+                onClick={async () => {
+                  await signOut()
+                  toast({ message: 'Successfully signed out!' })
+                }}
+              >
+                <DropdownMenuItem className={classNames?.content?.menuItem}>
+                  <LogOutIcon />
 
-                {localization.signOut}
-              </DropdownMenuItem>
+                  {localization.signOut}
+                </DropdownMenuItem>
+              </Button>
             </Link>
           </>
         )}

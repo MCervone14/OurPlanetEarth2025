@@ -26,13 +26,13 @@ const LaudatoSiPage = async () => {
 
   return (
     <div className="mx-auto flex-col lg:flex-row">
-      <h1 className="text-green-700 text-center my-16 h-20 text-4xl lg:text-8xl flex justify-center items-end z-10">
+      <h1 className="text-green-700 text-center my-4 h-20 text-4xl lg:text-8xl flex justify-center items-end z-10">
         Laudato Si Action Platform
       </h1>
-      <div className="">
+      <div className="max-w-6xl mx-auto p-5">
         {categories.map((category, idx) => (
           <div key={idx}>
-            <LaudatoSiCard category={category} />
+            <LaudatoSiCard category={category} index={idx} />
           </div>
         ))}
       </div>

@@ -24,12 +24,12 @@ const TeamPage = async () => {
 
   return (
     <div className="mx-auto flex-col lg:flex-row">
-      <h1 className="text-green-700 text-center my-16 h-20 text-4xl lg:text-8xl flex justify-center items-end z-10">
+      <h1 className="text-green-700 text-center my-8 h-20 text-3xl md:text-6xl lg:text-8xl flex justify-center items-end z-10">
         Our Planet Earth Team
       </h1>
       <div>
         {authors.map((author, idx) => (
-          <div key={idx}>
+          <div key={idx} className="max-w-7xl mx-auto p-5 lg:p-0">
             <AuthorCard author={author} index={idx} />
           </div>
         ))}

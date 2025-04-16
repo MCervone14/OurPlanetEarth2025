@@ -16,6 +16,11 @@ export const Authors: CollectionConfig = {
       required: true,
     },
     {
+      name: 'slug',
+      type: 'text',
+      required: true,
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',

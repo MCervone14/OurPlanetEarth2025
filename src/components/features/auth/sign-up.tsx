@@ -9,6 +9,7 @@ const SignUpForm = async () => {
           <Image
             src="/uploads/wind.jpg"
             blurDataURL={'/uploads/wind.jpg'}
+            layout="blur"
             alt="Wind Turbines"
             fill
             className="object-cover"
@@ -19,6 +20,7 @@ const SignUpForm = async () => {
           <Image
             src="/uploads/solar.jpg"
             blurDataURL={'/uploads/solar.jpg'}
+            layout="blur"
             alt="Solar panels"
             fill
             className="object-cover"

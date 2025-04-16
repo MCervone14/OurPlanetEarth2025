@@ -14,7 +14,7 @@ const Footer = () => {
   } else if (pathname.startsWith('/profile')) {
     return <SimpleFooter className="max-w-xl mx-auto rounded-t-xl" />
   } else {
-    return <SimpleFooter />
+    return <SimpleFooter className={'max-w-7xl mx-auto'} />
   }
 }
 

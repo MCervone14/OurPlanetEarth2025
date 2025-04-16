@@ -689,6 +689,7 @@ export interface Post {
 export interface Author {
   id: number;
   name: string;
+  slug: string;
   image: number | Media;
   'image-blur-url'?: (number | null) | Media;
   bio: string;
@@ -1153,6 +1154,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
   image?: T;
   'image-blur-url'?: T;
   bio?: T;
