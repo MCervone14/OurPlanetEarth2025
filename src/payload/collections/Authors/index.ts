@@ -18,6 +18,7 @@ export const Authors: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
+      defaultValue: 'name',
     },
     {
       name: 'image',
