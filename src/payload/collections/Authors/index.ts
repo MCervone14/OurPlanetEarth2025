@@ -18,7 +18,6 @@ export const Authors: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
     },
     {
       name: 'image',

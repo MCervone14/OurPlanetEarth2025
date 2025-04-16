@@ -2,6 +2,7 @@ import * as migration_20250407_232447_Init from './20250407_232447_Init';
 import * as migration_20250409_191938_AccessRules from './20250409_191938_AccessRules';
 import * as migration_20250413_215503_AddedImageBlur from './20250413_215503_AddedImageBlur';
 import * as migration_20250416_182618_AuthorSlug from './20250416_182618_AuthorSlug';
+import * as migration_20250416_200728_newAuthorSlug from './20250416_200728_newAuthorSlug';
 
 export const migrations = [
   {
@@ -22,6 +23,11 @@ export const migrations = [
   {
     up: migration_20250416_182618_AuthorSlug.up,
     down: migration_20250416_182618_AuthorSlug.down,
-    name: '20250416_182618_AuthorSlug'
+    name: '20250416_182618_AuthorSlug',
+  },
+  {
+    up: migration_20250416_200728_newAuthorSlug.up,
+    down: migration_20250416_200728_newAuthorSlug.down,
+    name: '20250416_200728_newAuthorSlug'
   },
 ];
