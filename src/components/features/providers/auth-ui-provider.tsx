@@ -182,7 +182,7 @@ export type AuthUIContextType = {
   /**
    * Custom Settings URL
    */
-  settingsURL?: string
+  settingsUrl?: string
   /**
    * Enable or disable Sign Up form
    * @default true

@@ -27,7 +27,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { User, type UserClassNames } from '@/components/features/misc/user'
-import { AuthCard } from '../auth/auth-card'
 import { signOut } from '@/lib/auth-client'
 
 export interface UserButtonClassNames {
@@ -92,7 +91,6 @@ export function UserButton({
     toast,
     viewPaths,
     onSessionChange,
-    user: contextUser,
     Link,
   } = useContext(AuthUIContext)
 
@@ -108,7 +106,7 @@ export function UserButton({
   }
 
   const { data: sessionData, isPending: sessionPending } = useSession()
-  const user = (contextUser || sessionData?.user) as UserType
+  const user = sessionData?.user as UserType
   const [activeSessionPending, setActiveSessionPending] = useState(false)
 
   const isPending = sessionPending || activeSessionPending
