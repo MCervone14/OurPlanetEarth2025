@@ -12,7 +12,7 @@ import { Comments } from 'src/payload/collections/Comments'
 import sharp from 'sharp'
 import path from 'path'
 import { betterAuthPlugin } from 'payload-auth/better-auth'
-import { betterAuthPluginOptions } from '@/lib/auth/options'
+import { betterAuthPluginOptions } from '@/payload/options'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { s3Storage } from '@payloadcms/storage-s3'
@@ -25,7 +25,7 @@ const allowedOrigins = [process.env.NEXT_PUBLIC_SERVER_URL as string].filter(Boo
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: 'users',
     importMap: {
       baseDir: path.resolve(dirname),
     },

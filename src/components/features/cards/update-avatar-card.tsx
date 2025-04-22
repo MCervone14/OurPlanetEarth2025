@@ -1,17 +1,20 @@
 'use client'
 
-import { useContext, useRef, useState } from 'react'
+import { use, useContext, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import type { AuthLocalization } from '@/lib/auth-localization'
 import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
+import { getErrorMessage } from '@/lib/get-error-message'
 import { cn } from '@/lib/utils'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { UserAvatar } from '@/components/features/avatar/user-avatar'
-
-import type { FetchError } from '@/types/fetch-error'
-import type { SettingsCardClassNames } from './settings-card'
-import { UpdateAvatarCardSkeleton } from '@/components/features/skeletons/update-avatar-card-skeleton'
+import type { SettingsCardClassNames } from '@/types/settings-card'
+import { SettingsCardFooter } from '@/components/features/cards/settings-card-footer'
+import { SettingsCardHeader } from '@/components/features/cards/settings-card-header'
+import { useBetterAuth } from '@/lib/auth'
+import { authClient } from '@/lib/auth-client'
 
 async function resizeAndCropImage(
   file: File,
@@ -35,9 +38,18 @@ async function resizeAndCropImage(
 
   ctx?.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, size, size)
 
-  const resizedImageBlob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, `image/${avatarExtension}`),
-  )
+  const quality = avatarExtension === 'png' ? undefined : 0.6
+
+  const resizedImageBlob = await new Promise<Blob | null>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (blob) resolve(blob)
+        else reject(new Error(`Failed to create resized image blob.`))
+      },
+      `image/${avatarExtension}`,
+      quality,
+    )
+  })
 
   return new File([resizedImageBlob as BlobPart], `${name}.${avatarExtension}`, {
     type: `image/${avatarExtension}`,
@@ -70,7 +82,7 @@ export interface UpdateAvatarCardProps {
 export function UpdateAvatarCard({
   className,
   classNames,
-  isPending,
+  isPending: externalIsPending,
   localization,
 }: UpdateAvatarCardProps) {
   const {
@@ -82,22 +94,23 @@ export function UpdateAvatarCard({
     avatarSize,
     avatarExtension,
     toast,
-    user,
   } = useContext(AuthUIContext)
 
   localization = { ...authLocalization, ...localization }
-
+  const router = useRouter()
+  const { sessionPromise, currentUserPromise } = useBetterAuth()
+  const session = use(sessionPromise)
   const { data: sessionData, isPending: sessionPending } = useSession()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleAvatarChange = async (file: File) => {
-    if (!sessionData) return
+    if (!session) return
 
     setLoading(true)
     const resizedFile = await resizeAndCropImage(
       file,
-      sessionData.user.id,
+      session?.user.id,
       avatarSize,
       avatarExtension,
     )
@@ -117,12 +130,26 @@ export function UpdateAvatarCard({
 
     if (optimistic && !uploadAvatar) setLoading(false)
 
+    console.log(image)
+
     try {
-      await updateUser({ image })
+      await authClient.updateUser({
+        image: image,
+        name: session?.user.name,
+        fetchOptions: {
+          onSuccess: () => {
+            toast({ variant: 'success', message: 'Successfully Updated Your Avatar' })
+          },
+          onError: () => {
+            toast({ variant: 'error', message: 'Error updating Avatar' })
+          },
+        },
+      })
+      router.refresh()
     } catch (error) {
       toast({
         variant: 'error',
-        message: (error as Error).message! || (error as FetchError).statusText!,
+        message: (getErrorMessage(error) || localization.requestFailed) as string,
       })
     }
 
@@ -131,12 +158,10 @@ export function UpdateAvatarCard({
 
   const openFileDialog = () => fileInputRef.current?.click()
 
-  if (isPending || sessionPending) {
-    return <UpdateAvatarCardSkeleton className={className} classNames={classNames} />
-  }
+  const isPending = externalIsPending || sessionPending
 
   return (
-    <Card className={cn('w-full overflow-hidden', className, classNames?.base)}>
+    <Card className={cn('w-full pb-0 text-start', className, classNames?.base)}>
       <input
         ref={fileInputRef}
         accept="image/*"
@@ -150,42 +175,35 @@ export function UpdateAvatarCard({
       />
 
       <div className="flex justify-between">
-        <CardHeader className={cn(classNames?.header)}>
-          <CardTitle className={cn('text-lg md:text-xl', classNames?.title)}>
-            {localization.avatar}
-          </CardTitle>
+        <SettingsCardHeader
+          className="grow self-start"
+          title={localization.avatar}
+          description={localization.avatarDescription}
+          isPending={isPending}
+          classNames={classNames}
+        />
 
-          <CardDescription className={cn('text-xs md:text-sm', classNames?.description)}>
-            {localization.avatarDescription}
-          </CardDescription>
-        </CardHeader>
-
-        <button className={cn('my-5 me-6')} type="button" onClick={openFileDialog}>
-          {loading ? (
+        <button className={cn('me-6')} type="button" onClick={openFileDialog}>
+          {isPending || loading ? (
             <Skeleton className={cn('size-20 rounded-full', classNames?.avatar?.base)} />
           ) : (
             <UserAvatar
-              key={(user || sessionData?.user)?.image}
+              key={session?.user?.image || ''}
               className="size-20 text-2xl"
               classNames={classNames?.avatar}
-              user={user || sessionData?.user}
+              user={session?.user}
             />
           )}
         </button>
       </div>
 
-      <CardFooter
-        className={cn('border-t bg-muted py-4.5 dark:bg-transparent', classNames?.footer)}
-      >
-        <CardDescription
-          className={cn(
-            'mx-auto text-center text-xs md:mx-0 md:text-left md:text-sm',
-            classNames?.instructions,
-          )}
-        >
-          {localization.avatarInstructions}
-        </CardDescription>
-      </CardFooter>
+      <SettingsCardFooter
+        className="!py-5"
+        instructions={localization.avatarInstructions}
+        classNames={classNames}
+        isPending={isPending}
+        isSubmitting={loading}
+      />
     </Card>
   )
 }

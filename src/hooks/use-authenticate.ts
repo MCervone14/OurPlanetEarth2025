@@ -1,37 +1,29 @@
 import { useContext, useEffect } from 'react'
 import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
-import type { AuthView } from '../lib/server'
-import type { AuthClient } from '@/types/auth-client'
+import type { AuthView } from '@/lib/auth-view-paths'
 
-export function useAuthenticate<TAuthClient extends AuthClient = AuthClient>(
-  authView: AuthView = 'signIn',
-  enabled = true,
-) {
-  const { hooks, basePath, viewPaths, replace } = useContext(AuthUIContext)
-  const { useSession } = hooks
-  const { data, isPending, ...rest } = useSession()
+interface AuthenticateOptions {
+  authView?: AuthView
+  enabled?: boolean
+}
+
+export function useAuthenticate(options?: AuthenticateOptions) {
+  const { authView = 'signIn', enabled = true } = options ?? {}
+
+  const {
+    hooks: { useSession },
+    basePath,
+    viewPaths,
+    replace,
+  } = useContext(AuthUIContext)
+
+  const { data: sessionData, isPending } = useSession()
 
   useEffect(() => {
-    if (enabled && !isPending && !data) {
-      replace(
-        `${basePath}/${viewPaths[authView]}?redirectTo=${window.location.href.replace(window.location.origin, '')}`,
-      )
-    }
-  }, [enabled, isPending, data, basePath, viewPaths, replace, authView])
+    if (!enabled || isPending || sessionData) return
 
-  type SessionData = TAuthClient['$Infer']['Session']
-  type User = TAuthClient['$Infer']['Session']['user']
-  type Session = TAuthClient['$Infer']['Session']['session']
-
-  const sessionData = data as SessionData | undefined
-  const user = sessionData?.user as User | undefined
-  const session = sessionData?.session as Session | undefined
-
-  return {
-    data: sessionData,
-    isPending,
-    ...rest,
-    user,
-    session,
-  }
+    replace(
+      `${basePath}/${viewPaths[authView]}?redirectTo=${window.location.href.replace(window.location.origin, '')}`,
+    )
+  }, [isPending, sessionData, basePath, viewPaths, replace, authView, enabled])
 }

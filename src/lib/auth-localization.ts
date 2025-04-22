@@ -29,6 +29,25 @@ export const authLocalization = {
   /** @default "An avatar is optional but strongly recommended." */
   avatarInstructions: 'An avatar is optional but strongly recommended.',
 
+  /** @default "Backup Codes" */
+  backupCodes: 'Backup Codes',
+
+  /** @default "Save these backup codes in a secure place. You can use them to access your account if you lose your two-factor authentication method." */
+  backupCodesDescription:
+    'Save these backup codes in a secure place. You can use them to access your account if you lose your two-factor authentication method.',
+
+  /** @default "Enter one of your backup codes. Once used, each code can only be used once and will be invalidated after use." */
+  backupCodePlaceholder: 'Backup Code',
+
+  /** @default "Backup Code" */
+  backupCode: 'Backup Code',
+
+  /** @default "Recover account" */
+  backupCodeAction: 'Recover account',
+
+  /** @default "Cancel" */
+  cancel: 'Cancel',
+
   /** @default "Change Password" */
   changePassword: 'Change Password',
 
@@ -41,11 +60,20 @@ export const authLocalization = {
   /** @default "Your password has been changed." */
   changePasswordSuccess: 'Your password has been changed.',
 
-  /** @default "Change Password" */
+  /** @default "Confirm Password" */
   confirmPassword: 'Confirm Password',
 
   /** @default "Confirm Password" */
   confirmPasswordPlaceholder: 'Confirm Password',
+
+  /** @default "Copied to clipboard" */
+  copiedToClipboard: 'Copied to clipboard',
+
+  /** @default "Copy all codes" */
+  copyAllCodes: 'Copy all codes',
+
+  /** @default "Continue" */
+  continue: 'Continue',
 
   /** @default "Current Password" */
   currentPassword: 'Current Password',
@@ -79,6 +107,9 @@ export const authLocalization = {
   /** @default "You must be recently logged in to delete your account." */
   deleteAccountNotFresh: 'You must be recently logged in to delete your account.',
 
+  /** @default "Disable" */
+  disable: 'Disable',
+
   /** @default "Choose a provider to login to your account" */
   disabledCredentialsDescription: 'Choose a provider to login to your account',
 
@@ -103,23 +134,26 @@ export const authLocalization = {
   /** @default "Please check your email for the verification link." */
   emailVerification: 'Please check your email for the verification link.',
 
+  /** @default "Enable" */
+  enable: 'Enable',
+
   /** @default "Failed to validate" */
   failedToValidate: 'Failed to validate',
 
   /** @default "Forgot Password" */
-  forgetPassword: 'Forgot Password',
+  forgotPassword: 'Forgot Password',
 
   /** @default "Send reset link" */
-  forgetPasswordAction: 'Send reset link',
+  forgotPasswordAction: 'Send reset link',
 
   /** @default "Enter your email to reset your password" */
-  forgetPasswordDescription: 'Enter your email to reset your password',
+  forgotPasswordDescription: 'Enter your email to reset your password',
 
   /** @default "Check your email for the password reset link." */
-  forgetPasswordEmail: 'Check your email for the password reset link.',
+  forgotPasswordEmail: 'Check your email for the password reset link.',
 
   /** @default "Forgot your password?" */
-  forgetPasswordLink: 'Forgot your password?',
+  forgotPasswordLink: 'Forgot your password?',
 
   /** @default "Link" */
   link: 'Link',
@@ -154,6 +188,12 @@ export const authLocalization = {
   /** @default "New Password" */
   newPasswordPlaceholder: 'New Password',
 
+  /** @default "One-Time Password" */
+  oneTimePassword: 'One-Time Password',
+
+  /** @default "Or continue with" */
+  orContinueWith: 'Or continue with',
+
   /** @default "Passkey" */
   passkey: 'Passkey',
 
@@ -162,9 +202,6 @@ export const authLocalization = {
 
   /** @default "Manage your passkeys for secure access." */
   passkeysDescription: 'Manage your passkeys for secure access.',
-
-  /** @default "Passwords do not match." */
-  passwordsDoNotMatch: 'Passwords do not match',
 
   /** @default "Securely access your account without a password." */
   passkeysInstructions: 'Securely access your account without a password.',
@@ -181,20 +218,23 @@ export const authLocalization = {
   /** @default "Password" */
   passwordPlaceholder: 'Password',
 
+  /** @default "Passwords do not match." */
+  passwordsDoNotMatch: 'Passwords do not match',
+
   /** @default "Providers" */
   providers: 'Providers',
 
   /** @default "Connect your account with a third-party service." */
   providersDescription: 'Connect your account with a third-party service.',
 
-  /** @default "Provider linked successfully." */
-  providerLinkSuccess: 'Provider linked successfully.',
+  /** @default "Recover Account" */
+  recover: 'Recover Account',
 
-  /** @default "Provider unlinked successfully." */
-  providerUnlinkSuccess: 'Provider unlinked successfully.',
+  /** @default "Recover account" */
+  recoverAction: 'Recover account',
 
-  /** @default "Could not load account info" */
-  providersLoadingError: 'Could not load account info',
+  /** @default "Please enter a backup code to access your account" */
+  recoverDescription: 'Please enter a backup code to access your account',
 
   /** @default "Remember me" */
   rememberMe: 'Remember me',
@@ -216,6 +256,9 @@ export const authLocalization = {
 
   /** @default "Password reset successfully" */
   resetPasswordSuccess: 'Password reset successfully',
+
+  /** @default "Request failed" */
+  requestFailed: 'Request failed',
 
   /** @default "Revoke" */
   revoke: 'Revoke',
@@ -278,8 +321,50 @@ export const authLocalization = {
   /** @default "Switch Account" */
   switchAccount: 'Switch Account',
 
+  /** @default "Trust this device" */
+  trustDevice: 'Trust this device',
+
+  /** @default "Two-Factor Authentication" */
+  twoFactor: 'Two-Factor Authentication',
+
+  /** @default "Verify code" */
+  twoFactorAction: 'Verify code',
+
+  /** @default "Please enter your one-time password to continue" */
+  twoFactorDescription: 'Please enter your one-time password to continue',
+
+  /** @default "Add an extra layer of security to your account." */
+  twoFactorCardDescription: 'Add an extra layer of security to your account.',
+
+  /** @default "Please enter your password to disable 2FA." */
+  twoFactorDisableInstructions: 'Please enter your password to disable 2FA.',
+
+  /** @default "Please enter your password to enable 2FA" */
+  twoFactorEnableInstructions: 'Please enter your password to enable 2FA.',
+
+  /** @default "Two-factor authentication enabled" */
+  twoFactorEnabled: 'Two-factor authentication enabled',
+
+  /** @default "Two-Factor Authentication disabled" */
+  twoFactorDisabled: 'Two-Factor Authentication disabled',
+
+  /** @default "Two-Factor Authentication" */
+  twoFactorPrompt: 'Two-Factor Authentication',
+
+  /** @default "Scan the QR Code with your Authenticator" */
+  twoFactorTotpLabel: 'Scan the QR Code with your Authenticator',
+
+  /** @default "Continue with Authenticator" */
+  continueWithAuthenticator: 'Continue with Authenticator',
+
+  /** @default "Send verification code" */
+  sendVerificationCode: 'Send verification code',
+
   /** @default "Unlink" */
   unlink: 'Unlink',
+
+  /** @default "Forgot authenticator?" */
+  forgotAuthenticator: 'Forgot authenticator?',
 
   /** @default "Username" */
   username: 'Username',
@@ -302,6 +387,12 @@ export const authLocalization = {
   /** @default "Please verify your email address. Check your inbox for the verification email. If you haven't received the email, click the button below to resend." */
   verifyYourEmailDescription:
     "Please verify your email address. Check your inbox for the verification email. If you haven't received the email, click the button below to resend.",
+
+  /** @default "Resend code" */
+  resendCode: 'Resend code',
+
+  /** @default "Go back" */
+  goBack: 'Go back',
 }
 
 export type AuthLocalization = Partial<typeof authLocalization>

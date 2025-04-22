@@ -1,6 +1,6 @@
 'use client'
-import type React from 'react'
 
+import type React from 'react'
 import { toast } from 'sonner'
 import type { AuthClient } from '@/types/auth-client'
 import { type AuthLocalization, authLocalization } from '@/lib/auth-localization'
@@ -8,22 +8,15 @@ import { type AuthViewPaths, authViewPaths } from '@/lib/auth-view-paths'
 import type { AuthMutators } from '@/types/auth-mutates'
 import type { AdditionalFields } from '@/types/additional-fields'
 import type { AuthHooks } from '@/types/auth-hooks'
-import type { SocialProvider } from '@/lib/social-providers'
+import type { SocialProvider } from 'better-auth/social-providers'
 import type { Link } from '@/types/link'
 import { useAuthData } from '@/hooks/use-auth-data'
 import { type ReactNode, createContext } from 'react'
 import { AnyAuthClient } from '@/types/any-auth-client'
-import { User } from 'better-auth'
+import type { RenderToast } from '@/types/render-toast'
+import type { Provider } from '@/lib/social-providers'
 
-const DefaultLink = ({
-  href,
-  className,
-  children,
-}: {
-  href: string
-  className?: string
-  children: ReactNode
-}) => (
+const DefaultLink: Link = ({ href, className, children }) => (
   <a className={className} href={href}>
     {children}
   </a>
@@ -36,15 +29,6 @@ const defaultNavigate = (href: string) => {
 const defaultReplace = (href: string) => {
   window.location.replace(href)
 }
-
-type ToastVariant = 'default' | 'success' | 'error' | 'info' | 'warning'
-export type RenderToast = ({
-  variant,
-  message,
-}: {
-  variant?: ToastVariant
-  message: string
-}) => void
 
 const defaultToast: RenderToast = ({ variant = 'default', message }) => {
   if (variant === 'default') {
@@ -61,12 +45,12 @@ export type AuthUIContextType = {
    */
   additionalFields?: AdditionalFields
   /**
-   * Enable or disable avatar support
+   * Enable or disable Avatar support
    * @default false
    */
   avatar?: boolean
   /**
-   * File extension for avatar uploads
+   * File extension for Avatar uploads
    * @default "png"
    */
   avatarExtension: string
@@ -81,23 +65,26 @@ export type AuthUIContextType = {
    */
   basePath: string
   /**
+   * Front end base URL for auth API callbacks
+   */
+  baseURL?: string
+  /**
    * Force color icons for both light and dark themes
    * @default false
    */
   colorIcons?: boolean
   /**
-   * Enable or disable confirm password input
+   * Enable or disable the Confirm Password input
    * @default false
    */
   confirmPassword?: boolean
   /**
-   * Enable or disable credentials support
+   * Enable or disable Credentials support
    * @default true
    */
-
   credentials?: boolean
   /**
-   * Default redirect path after sign in
+   * Default redirect URL after authenticating
    * @default "/"
    */
   redirectTo: string
@@ -107,21 +94,26 @@ export type AuthUIContextType = {
    */
   deleteAccountVerification?: boolean
   /**
-   * Enable or disable user account deletion
+   * Enable or disable user change email support
+   * @default true
+   */
+  changeEmail?: boolean
+  /**
+   * Enable or disable User Account deletion
    * @default false
    */
   deleteUser?: boolean
   /**
-   * Show verify email card for unverified emails
+   * Show Verify Email card for unverified emails
    */
   emailVerification?: boolean
   /**
-   * Enable or disable forgot password support
-   * @default false
+   * Enable or disable Forgot Password flow
+   * @default true
    */
-  forgetPassword?: boolean
+  forgotPassword?: boolean
   /**
-   * Freshness age for session data
+   * Freshness age for Session data
    * @default 60 * 60 * 24
    */
   freshAge: number
@@ -131,19 +123,19 @@ export type AuthUIContextType = {
   hooks: AuthHooks
   localization: AuthLocalization
   /**
-   * Enable or disable magic link support
+   * Enable or disable Magic Link support
    * @default false
    */
   magicLink?: boolean
   /**
-   * Enable or disable multi-session support
+   * Enable or disable Multi Session support
    * @default false
    */
   multiSession?: boolean
   /** @internal */
   mutators: AuthMutators
   /**
-   * Enable or disable name requirement for sign up
+   * Enable or disable name requirement for Sign Up
    * @default true
    */
   nameRequired?: boolean
@@ -153,22 +145,22 @@ export type AuthUIContextType = {
    */
   noColorIcons?: boolean
   /**
-   * Perform some user updates optimistically
+   * Perform some User updates optimistically
    * @default false
    */
   optimistic?: boolean
   /**
-   * Enable or disable passkey support
+   * Enable or disable Passkey support
    * @default false
    */
   passkey?: boolean
   /**
-   * Enable or disable persisting the client with better-auth-tanstack
+   * Forces better-auth-tanstack to refresh the Session on the auth callback page
    * @default false
    */
   persistClient?: boolean
   /**
-   * Array of social providers to enable
+   * Array of Social Providers to enable
    * @remarks `SocialProvider[]`
    */
   providers?: SocialProvider[]
@@ -176,9 +168,9 @@ export type AuthUIContextType = {
    * Custom OAuth Providers
    * @default false
    */
-  otherProviders?: SocialProvider[]
+  otherProviders?: Provider[]
   /**
-   * Enable or disable remember me support
+   * Enable or disable Remember Me checkbox
    * @default false
    */
   rememberMe?: boolean
@@ -188,11 +180,11 @@ export type AuthUIContextType = {
    */
   settingsFields?: string[]
   /**
-   * Custom settings URL
+   * Custom Settings URL
    */
-  settingsUrl?: string
+  settingsURL?: string
   /**
-   * Enable or disable sign up support
+   * Enable or disable Sign Up form
    * @default true
    */
   signUp?: boolean
@@ -203,12 +195,12 @@ export type AuthUIContextType = {
   signUpFields?: string[]
   toast: RenderToast
   /**
-   * Enable or disable username support
-   * @default false
+   * Enable or disable two-factor authentication support
+   * @default undefined
    */
-  user?: Omit<User, 'createdAt' | 'updatedAt'>
+  twoFactor?: ('otp' | 'totp')[]
   /**
-   * Enable or disable username support
+   * Enable or disable Username support
    * @default false
    */
   username?: boolean
@@ -219,7 +211,7 @@ export type AuthUIContextType = {
    */
   navigate: typeof defaultNavigate
   /**
-   * Called whenever the session changes
+   * Called whenever the Session changes
    */
   onSessionChange?: () => void | Promise<void>
   /**
@@ -228,30 +220,29 @@ export type AuthUIContextType = {
    */
   replace: typeof defaultReplace
   /**
-   * Upload an avatar image and return the URL string
+   * Upload an Avatar image and return the URL string
    * @remarks `(file: File) => Promise<string>`
    */
   uploadAvatar?: (file: File) => Promise<string | undefined | null>
   /**
-   * Custom link component for navigation
+   * Custom Link component for navigation
    * @default <a>
    */
   Link: Link
 }
 
 export type AuthUIProviderProps = {
-  /**
-   * Your better-auth createAuthClient
-   * @default Required
-   * @remarks `AuthClient`
-   */
   children: ReactNode
   /**
-   * Your better-auth createAuthClient
+   * Better Auth client returned from createAuthClient
    * @default Required
    * @remarks `AuthClient`
    */
   authClient: AnyAuthClient
+  /**
+   * ADVANCED: Custom hooks for fetching auth data
+   */
+  hooks?: Partial<AuthHooks>
   /**
    * Customize the paths for the auth views
    * @default authViewPaths
@@ -259,31 +250,35 @@ export type AuthUIProviderProps = {
    */
   viewPaths?: Partial<AuthViewPaths>
   /**
-   * Render custom toasts
+   * Render custom Toasts
    * @default Sonner
    */
   toast?: RenderToast
   /**
-   * Customize the localization strings
+   * Customize the Localization strings
    * @default authLocalization
    * @remarks `AuthLocalization`
    */
   localization?: AuthLocalization
-  /** @internal */
-  mutates?: AuthMutators
-} & Partial<Omit<AuthUIContextType, 'viewPaths' | 'localization' | 'mutates' | 'toast'>>
+  /**
+   * ADVANCED: Custom mutators for updating auth data
+   */
+  mutators?: Partial<AuthMutators>
+} & Partial<Omit<AuthUIContextType, 'viewPaths' | 'localization' | 'mutators' | 'toast' | 'hooks'>>
 
 export const AuthUIContext = createContext<AuthUIContextType>({} as unknown as AuthUIContextType)
 
 export const AuthUIProvider = ({
   children,
   authClient,
-  avatarExtension = 'png',
+  avatarExtension = 'webp',
   avatarSize,
   basePath = '/auth',
+  baseURL = '',
   redirectTo = '/',
   credentials = true,
-  forgetPassword = true,
+  changeEmail = true,
+  forgotPassword = true,
   freshAge = 60 * 60 * 24,
   hooks,
   mutators,
@@ -299,9 +294,7 @@ export const AuthUIProvider = ({
   uploadAvatar,
   Link = DefaultLink,
   ...props
-}: {
-  children: ReactNode
-} & AuthUIProviderProps) => {
+}: AuthUIProviderProps) => {
   const defaultMutates: AuthMutators = {
     deletePasskey: (params) =>
       (authClient as AuthClient).passkey.deletePasskey({
@@ -336,7 +329,7 @@ export const AuthUIProvider = ({
   }
 
   const defaultHooks: AuthHooks = {
-    useSession: authClient.useSession,
+    useSession: (authClient as AuthClient).useSession,
     useListAccounts: () => useAuthData({ queryFn: authClient.listAccounts }),
     useListDeviceSessions: () =>
       useAuthData({ queryFn: (authClient as AuthClient).multiSession.listDeviceSessions }),
@@ -351,9 +344,11 @@ export const AuthUIProvider = ({
         avatarExtension,
         avatarSize: avatarSize || (uploadAvatar ? 256 : 128),
         basePath: basePath === '/' ? '' : basePath,
+        baseURL,
         redirectTo,
+        changeEmail,
         credentials,
-        forgetPassword,
+        forgotPassword,
         freshAge,
         hooks: { ...defaultHooks, ...hooks },
         mutators: { ...defaultMutates, ...mutators },

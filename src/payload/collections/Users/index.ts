@@ -17,7 +17,15 @@ export const Users: CollectionConfig = {
       }
     },
     create: () => true,
-    update: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => {
+      if (req.user?.role === 'admin') {
+        return true
+      }
+
+      return {
+        id: { equals: req.user?.id },
+      }
+    },
     delete: ({ req }) => {
       if (req.user?.role === 'admin') {
         return true
@@ -35,21 +43,6 @@ export const Users: CollectionConfig = {
         if (!user.email_verified && user.role === 'user') {
           throw new Error('Please verify your email before logging in.')
         }
-      },
-    ],
-    beforeChange: [
-      async ({ data, operation, req }) => {
-        if (operation === 'create') {
-          const existingUsers = await req.payload.find({
-            collection: 'users',
-            limit: 1,
-          })
-
-          if (existingUsers.totalDocs === 0) {
-            data.role = 'admin'
-          }
-        }
-        return data
       },
     ],
   },

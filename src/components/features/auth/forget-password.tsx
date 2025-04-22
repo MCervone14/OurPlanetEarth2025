@@ -49,8 +49,6 @@ export function ForgetPass({ setLoginFormDisabled }: ForgetPasswordProps) {
       redirectTo: '/reset',
     })
 
-    console.log('data', data, 'error', error)
-
     //const checkEmail = await VerifyUserEmail(email)
 
     // console.log(checkEmail)

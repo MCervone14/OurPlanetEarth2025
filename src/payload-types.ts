@@ -689,7 +689,7 @@ export interface Post {
 export interface Author {
   id: number;
   name: string;
-  slug: string;
+  slug?: string | null;
   image: number | Media;
   'image-blur-url'?: (number | null) | Media;
   bio: string;

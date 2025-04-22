@@ -1,22 +1,21 @@
-import type { Plugin } from 'payload'
-import { payloadBetterAuth, type PayloadBetterAuthOptions } from '@payload-auth/better-auth-plugin'
+import type {
+  PayloadBetterAuthOptions,
+  PayloadBetterAuthPluginOptions,
+} from 'payload-auth/better-auth'
+import { nextCookies } from 'better-auth/next-js'
 import {
   admin,
-  multiSession,
-  organization,
-  twoFactor,
-  openAPI,
   anonymous,
-  phoneNumber,
-  magicLink,
-  emailOTP,
   apiKey,
+  emailOTP,
+  magicLink,
+  multiSession,
+  openAPI,
+  organization,
+  phoneNumber,
+  twoFactor,
 } from 'better-auth/plugins'
-import { nextCookies } from 'better-auth/next-js'
 import { passkey } from 'better-auth/plugins/passkey'
-import { seoPlugin } from '@payloadcms/plugin-seo'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
-import { s3Storage } from '@payloadcms/storage-s3'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -36,7 +35,7 @@ export const betterAuthPlugins = [
         },
       },
     },
-    issuer: 'OurPlanetEarth',
+    issuer: 'payload-better-auth',
     otpOptions: {
       async sendOTP({ user, otp }) {
         console.log('Send OTP for user: ', user, otp)
@@ -44,7 +43,7 @@ export const betterAuthPlugins = [
     },
   }),
   anonymous({
-    emailDomainName: 'OurPlanetEarth.eco@gmail.com',
+    emailDomainName: 'OurPlanetEarth',
     onLinkAccount: async ({ anonymousUser, newUser }) => {
       console.log('Link account for anonymous user: ', anonymousUser, newUser)
     },
@@ -66,9 +65,9 @@ export const betterAuthPlugins = [
     },
   }),
   passkey({
-    rpID: 'OurPlanetEarth',
-    rpName: 'payload-better-auth-demo',
-    origin: 'http://localhost:5000',
+    rpID: 'ourplanetearth',
+    rpName: 'ourplanetearth',
+    origin: process.env.NEXT_PUBLIC_SERVER_URL,
   }),
   admin(),
   apiKey(),
@@ -77,7 +76,7 @@ export const betterAuthPlugins = [
       enabled: true,
     },
     async sendInvitationEmail(data) {
-      const inviteLink = `http://localhost:5000/accept-invitation/${data.id}`
+      const inviteLink = `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/accept-invitation/${data.id}`
       console.log('Send invite for org: ', data, inviteLink)
     },
   }),
@@ -90,8 +89,8 @@ export type BetterAuthPlugins = typeof betterAuthPlugins
 
 export const betterAuthOptions: PayloadBetterAuthOptions = {
   appName: 'ourplanetearth',
-  baseURL: 'http://localhost:5000',
-  trustedOrigins: ['http://localhost:5000'],
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL as string,
+  trustedOrigins: [process.env.NEXT_PUBLIC_SERVER_URL as string],
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
@@ -118,11 +117,10 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
       clientId: process.env.MICROSOFT_OAUTH_CLIENT_ID as string,
       clientSecret: process.env.MICROSOFT_OAUTH_CLIENT_SECRET as string,
       tenantId: 'common',
-      requireSelectAccount: true,
     },
   },
   emailVerification: {
-    async sendVerificationEmail({ user, url }) {
+    async sendVerificationEmail({ user, url }, req) {
       const payload = await getPayload({ config })
 
       const modifiedUrl = new URL(url)
@@ -135,22 +133,25 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
       })
     },
   },
-
-  //@ts-expect-error mismatch types
   plugins: betterAuthPlugins,
-
   user: {
     changeEmail: {
       enabled: true,
-      sendChangeEmailVerification: async ({ user, newEmail, url, token }) => {
-        console.log('Send change email verification for user: ', user, newEmail, url, token)
+      sendChangeEmailVerification: async ({ user, newEmail, url, token }, req) => {
+        const payload = await getPayload({ config })
+
+        const modifiedUrl = new URL(url)
+        modifiedUrl.searchParams.set('verifyEmail', 'emailVerified')
+
+        await payload.sendEmail({
+          to: newEmail,
+          subject: 'Confirm Your New Email Address',
+          text: `Click the link to confirm your new email: ${url} `,
+        })
       },
     },
     deleteUser: {
       enabled: true,
-      sendDeleteAccountVerification: async ({ user, url, token }) => {
-        // Send delete account verification
-      },
       beforeDelete: async (user) => {
         // Perform actions before user deletion
       },
@@ -168,7 +169,7 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
   },
   session: {
     cookieCache: {
-      enabled: true,
+      enabled: false,
       maxAge: 5 * 60, // Cache duration in seconds
     },
   },
@@ -180,53 +181,25 @@ export const betterAuthOptions: PayloadBetterAuthOptions = {
   },
 }
 
-export const plugins: Plugin[] = [
-  //@ts-expect-error Error with different versions of payload from plugins.
-  payloadBetterAuth({
-    disabled: false,
-    logTables: false,
-    enableDebugLogs: true,
-    hidePluginCollections: true,
-    users: {
-      slug: 'users',
-      hidden: false,
-      adminRoles: ['admin'],
-    },
-    accounts: {
-      slug: 'accounts',
-      hidden: false,
-    },
-    sessions: {
-      slug: 'sessions',
-      hidden: false,
-    },
-    verifications: {
-      slug: 'verifications',
-      hidden: false,
-    },
-    betterAuthOptions,
-  }),
-  seoPlugin({
-    uploadsCollection: 'media',
-    generateTitle: ({ doc }) => `${doc.title} - Our Planet Earth`,
-    generateDescription: ({ doc }) => doc.excerpt,
-  }),
-  payloadCloudPlugin(),
-  s3Storage({
-    collections: {
-      media: {
-        prefix: 'media',
-      },
-    },
-    bucket: process.env.S3_BUCKET as string,
-    config: {
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
-      },
-      region: process.env.S3_REGION,
-      endpoint: process.env.S3_ENDPOINT,
-      forcePathStyle: true,
-    },
-  }),
-]
+export const betterAuthPluginOptions: PayloadBetterAuthPluginOptions = {
+  disabled: false,
+  logTables: false,
+  enableDebugLogs: false,
+  hidePluginCollections: true,
+  users: {
+    slug: 'users',
+    hidden: false,
+    adminRoles: ['admin'],
+    allowedFields: ['name', 'image'],
+  },
+  accounts: {
+    slug: 'accounts',
+  },
+  sessions: {
+    slug: 'sessions',
+  },
+  verifications: {
+    slug: 'verifications',
+  },
+  betterAuthOptions: betterAuthOptions,
+}

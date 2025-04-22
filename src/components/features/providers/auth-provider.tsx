@@ -30,6 +30,8 @@ export function Providers({ children }: { children: ReactNode }) {
         rememberMe={false}
         deleteUser={true}
         avatar={true}
+        optimistic={false}
+        deleteAccountVerification={false}
       >
         {children}
       </AuthUIProvider>

@@ -18,7 +18,7 @@ import {
 import { Label } from '@/components/ui/label'
 
 import { PasswordInput } from '@/components/features/input/password-input'
-import type { SettingsCardClassNames } from './settings-card'
+import type { SettingsCardClassNames } from '@/types/settings-card'
 import { ChangePasswordCardSkeleton } from '@/components/features/skeletons/change-password-card-skeleton'
 
 export interface ChangePasswordCardProps {
@@ -158,14 +158,14 @@ export function ChangePasswordCard({
   }
 
   return (
-    <Card className={cn('w-full overflow-hidden', className, classNames?.base)}>
+    <Card className={cn('w-full overflow-hidden p-0 pt-6', className, classNames?.base)}>
       <form action={action}>
         <CardHeader className={classNames?.header}>
           <CardTitle className={cn('text-lg md:text-xl', classNames?.title)}>
             {localization.changePassword}
           </CardTitle>
 
-          <CardDescription className={cn('text-xs md:text-sm', classNames?.description)}>
+          <CardDescription className={cn('text-xs md:text-sm mb-2', classNames?.description)}>
             {localization.changePasswordDescription}
           </CardDescription>
         </CardHeader>
@@ -187,7 +187,7 @@ export function ChangePasswordCard({
             />
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-2 pb-6">
             <Label className={classNames?.label} htmlFor="newPassword">
               {localization.newPassword}
             </Label>

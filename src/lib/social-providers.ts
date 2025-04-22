@@ -106,4 +106,4 @@ export const socialProviders = [
   },
 ] as const
 
-export type SocialProvider = (typeof socialProviders)[number]['provider']
+export type Provider = (typeof socialProviders)[number]['provider']

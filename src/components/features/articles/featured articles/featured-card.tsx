@@ -107,7 +107,7 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
                 </li>
               </div>
               <Link href={`/articles/${article.slug}`} className="flex items-center text-white  ">
-                <div className="flex bg-green-950 hover:bg-green-900 transition-colors p-5">
+                <div className="flex bg-green-950 hover:bg-green-900 transition-colors p-6">
                   <li className="flex items-center text-center">
                     <ArrowRightIcon className="hidden md:block mr-1 h-4 w-4 fill-white stroke-white " />
                     <span>Read More</span>

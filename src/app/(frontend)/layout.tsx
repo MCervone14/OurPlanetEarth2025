@@ -4,6 +4,8 @@ import Navbar from '@/components/features/header/navigation/navbar'
 import Footer from '@/components/features/footer'
 import { Roboto } from 'next/font/google'
 import { Providers } from '@/components/features/providers/auth-provider'
+import { BetterAuthProvider } from '@/lib/auth'
+import { getContextProps } from '@/lib/auth/get-context-props'
 
 export const metadata = {
   title: 'Home | Our Planet Earth',
@@ -18,14 +20,16 @@ const roboto = Roboto({ weight: '400', subsets: ['latin'], display: 'swap' })
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={roboto.className}>
-      <Providers>
-        <body className="">
-          <Navbar />
-          <main className="max-w-7xl mx-auto">{children}</main>
-          <Footer />
-          <Toaster />
-        </body>
-      </Providers>
+      <BetterAuthProvider {...getContextProps()}>
+        <Providers>
+          <body className="">
+            <Navbar />
+            <main className="max-w-7xl mx-auto">{children}</main>
+            <Footer />
+            <Toaster />
+          </body>
+        </Providers>
+      </BetterAuthProvider>
     </html>
   )
 }

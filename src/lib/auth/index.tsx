@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, ReactNode } from 'react'
-import type { Session, Account, DeviceSession } from '@/lib/auth-types'
+import type { Session, Account, DeviceSession } from '@/types/auth-types'
 import type { TypedUser } from 'payload'
 
 type UserContextType = {

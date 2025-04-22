@@ -57,10 +57,12 @@ const Navbar = async () => {
       {/* End For Mobile View*/}
 
       <Logo />
-      <NavigationMenu className="hidden md:flex gap-20 z-200 ">
+      <NavigationMenu className="hidden md:flex gap-20 z-200" delayDuration={25}>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="bg-gray-100">Blog Articles</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="bg-gray-100 cursor-pointer">
+              Blog Articles
+            </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="p-0 md:w-[400px] lg:w-[400px] z-100 bg-white flex items-center">
                 <ListItem

@@ -24,7 +24,7 @@ const TeamPage = async () => {
 
   return (
     <div className="mx-auto flex-col lg:flex-row">
-      <h1 className="text-green-700 text-center my-8 h-20 text-3xl md:text-6xl lg:text-8xl flex justify-center items-end z-10">
+      <h1 className="text-blue-950 text-center my-8 h-20 text-3xl md:text-6xl lg:text-8xl flex justify-center items-end z-10">
         Our Planet Earth Team
       </h1>
       <div>

@@ -58,8 +58,8 @@ export default function CTAFooter({ className }: { className?: string }) {
             <h3 className="font-bold mb-4">LEGAL</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="hover:underline">
-                  Terms of Service
+                <Link href="/privacy-policy" className="hover:underline">
+                  Privacy Policy
                 </Link>
               </li>
             </ul>

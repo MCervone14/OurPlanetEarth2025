@@ -1,4 +1,4 @@
-import type { Account, DeviceSession } from '@/lib/auth-types'
+import type { Account, DeviceSession } from '@/types/auth-types'
 import { getPayload } from '@/lib/getPayload'
 import { headers as requestHeaders } from 'next/headers'
 
@@ -17,7 +17,7 @@ export const getUserAccounts = async (): Promise<Account[]> => {
 export const getDeviceSessions = async (): Promise<DeviceSession[]> => {
   const payload = await getPayload()
   const headers = await requestHeaders()
-  return await payload.betterAuth.api.listDeviceSessions({ headers })
+  return await payload.betterAuth.api.listSessions({ headers })
 }
 
 export const currentUser = async () => {

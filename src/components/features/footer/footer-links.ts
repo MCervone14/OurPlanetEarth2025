@@ -15,4 +15,8 @@ export const footerLinks = [
     text: 'Laudato Si Action Platform',
     href: '/laudato-si',
   },
+  {
+    text: 'Privacy Policy',
+    href: '/privacy-policy',
+  },
 ]
