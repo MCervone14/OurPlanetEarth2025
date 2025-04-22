@@ -22,7 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { ForgetPass } from '@/components/features/auth/forget-password'
+import { ForgotPass } from '@/components/features/auth/forgot-password'
 import OAuthButton from '@/components/features/buttons/OAuthButton'
 import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'sonner'
@@ -183,7 +183,7 @@ export const LoginModal = () => {
                 )}
               />
               <div className="text-sm text-gray-600 ">
-                <ForgetPass setLoginFormDisabled={setIsFormDisabled} />
+                <ForgotPass setLoginFormDisabled={setIsFormDisabled} />
               </div>
             </div>
             <Button

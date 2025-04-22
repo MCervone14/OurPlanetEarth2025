@@ -4,8 +4,6 @@ import { useContext, useState, useActionState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
-import type { AuthLocalization } from '@/lib/auth-localization'
-import type { SettingsCardClassNames } from '@/components/features/cards/settings-card'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
 

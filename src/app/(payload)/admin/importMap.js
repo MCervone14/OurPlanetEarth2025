@@ -25,7 +25,7 @@ import { TableFeatureClient as TableFeatureClient_e70f5e05f09f93e00b997edb1ef0c8
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { ResetPass as ResetPass_33a9f993f1c6f427e89073df256c8d73 } from '@/components/features/auth/reset-password'
-import { ForgetPass as ForgetPass_017b832ba01711c44ecee7a9b2bde7c2 } from '@/components/features/auth/forget-password'
+import { ForgotPass as ForgotPass_75af7e8adcd6a09f0c4dc9190ef49575 } from '@/components/features/auth/forgot-password'
 
 export const importMap = {
   "payload-auth/better-auth/plugin/client#AdminButtons": AdminButtons_5a568d0e24198ca3140489e0d330f424,
@@ -55,5 +55,5 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@/components/features/auth/reset-password#ResetPass": ResetPass_33a9f993f1c6f427e89073df256c8d73,
-  "@/components/features/auth/forget-password#ForgetPass": ForgetPass_017b832ba01711c44ecee7a9b2bde7c2
+  "@/components/features/auth/forgot-password#ForgotPass": ForgotPass_75af7e8adcd6a09f0c4dc9190ef49575
 }

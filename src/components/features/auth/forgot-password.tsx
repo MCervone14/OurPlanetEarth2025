@@ -29,7 +29,7 @@ interface ForgetPasswordProps {
   setLoginFormDisabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function ForgetPass({ setLoginFormDisabled }: ForgetPasswordProps) {
+export function ForgotPass({ setLoginFormDisabled }: ForgetPasswordProps) {
   const form = useForm<z.output<typeof ForgetPasswordSchema>>({
     resolver: zodResolver(ForgetPasswordSchema),
     defaultValues: {

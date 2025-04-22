@@ -35,9 +35,9 @@ export default buildConfig({
           Component: '@/components/features/auth/reset-password#ResetPass',
           path: '/reset-password',
         },
-        'forget-password': {
-          Component: '@/components/features/auth/forget-password#ForgetPass',
-          path: '/forget-password',
+        'forgot-password': {
+          Component: '@/components/features/auth/forgot-password#ForgotPass',
+          path: '/forgot-password',
         },
       },
     },

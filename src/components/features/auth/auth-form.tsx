@@ -6,7 +6,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { AuthLocalization } from '@/lib/auth-localization'
 import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
 import type { AuthView } from '@/lib/auth-view-paths'
-import { type SocialProvider, socialProviders } from '@/lib/social-providers'
+import { Provider, socialProviders } from '@/lib/social-providers'
 import { cn, isValidEmail } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -21,7 +21,7 @@ import { ProviderButton } from '@/components/features/buttons/provider-button'
 export type AuthFormClassNames = {
   base?: string
   actionButton?: string
-  forgetPasswordLink?: string
+  forgotPasswordLink?: string
   input?: string
   label?: string
   description?: string
@@ -60,7 +60,7 @@ export function AuthForm({
     confirmPassword: confirmPasswordEnabled,
     redirectTo: defaultRedirectTo,
     credentials,
-    forgetPassword,
+    forgotPassword,
     hooks: { useIsRestoring, useSession },
     localization: authLocalization,
     magicLink,
@@ -155,7 +155,7 @@ export function AuthForm({
       username: formData?.get('username') as string,
       name: formData?.get('name') as string,
     })
-    const provider = formData.get('provider') as SocialProvider
+    const provider = formData.get('provider') as Provider
 
     if (provider) {
       const { error } = await authClient.signIn.social({
@@ -349,11 +349,11 @@ export function AuthForm({
         break
       }
 
-      case 'forgetPassword': {
+      case 'forgotPassword': {
         const { error } = await authClient.forgetPassword({
           email: email,
           redirectTo: window.location.pathname.replace(
-            viewPaths.forgetPassword,
+            viewPaths.forgotPassword,
             viewPaths.resetPassword,
           ),
         })
@@ -361,7 +361,7 @@ export function AuthForm({
         if (error) {
           setErrorMessage(error.message || error.statusText)
         } else {
-          toast({ variant: 'success', message: localization.forgetPasswordEmail! })
+          toast({ variant: 'success', message: localization.forgotPasswordEmail! })
           navigate(`${basePath}/${viewPaths.signIn}`)
         }
 
@@ -537,16 +537,16 @@ export function AuthForm({
                 {localization.password}
               </Label>
 
-              {view === 'signIn' && forgetPassword && (
+              {view === 'signIn' && forgotPassword && (
                 <Link
                   className={cn(
                     '-my-1 ml-auto inline-block text-sm hover:underline',
-                    classNames?.forgetPasswordLink,
+                    classNames?.forgotPasswordLink,
                   )}
-                  href={`${basePath}/${viewPaths.forgetPassword}`}
-                  to={`${basePath}/${viewPaths.forgetPassword}`}
+                  href={`${basePath}/${viewPaths.forgotPassword}`}
+                  to={`${basePath}/${viewPaths.forgotPassword}`}
                 >
-                  {localization.forgetPasswordLink}
+                  {localization.forgotPasswordLink}
                 </Link>
               )}
             </div>

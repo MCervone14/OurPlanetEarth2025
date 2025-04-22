@@ -4,7 +4,7 @@ import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { SettingsCardClassNames } from '@/components/features/cards/settings-card'
+import type { SettingsCardClassNames } from '@/types/settings-card'
 
 export function ProvidersCardSkeleton({
   className,

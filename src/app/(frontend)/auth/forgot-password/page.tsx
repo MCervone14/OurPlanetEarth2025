@@ -19,7 +19,7 @@ const ForgetPassPage = async () => {
             className="object-cover"
           />
         </div>
-        <AuthCard view="forgetPassword" className="rounded-none" />
+        <AuthCard view="forgotPassword" className="rounded-none" />
         <div className="hidden sm:block w-1/2 h-[calc(100% - 500px)] relative z-10">
           <Image
             src="/uploads/mountain-scenery.jpg"

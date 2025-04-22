@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { Card, CardFooter, CardHeader } from '../../ui/card'
 import { Skeleton } from '../../ui/skeleton'
-import type { SettingsCardClassNames } from '@/components/features/cards/settings-card'
+import type { SettingsCardClassNames } from '@/types/settings-card'
 
 export function DeleteAccountCardSkeleton({
   className,
