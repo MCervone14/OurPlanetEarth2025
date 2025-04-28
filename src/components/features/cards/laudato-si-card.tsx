@@ -17,7 +17,7 @@ const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
   return (
     <article className="rounded-xl shadow-lg bg-white w-full h-full relative mt-8">
       <div
-        className={`flex flex-col w-full h-full ${Number(category.id) % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
+        className={`flex flex-col w-full h-full ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
       >
         {/*Image Side of Category Card*/}
         <Image
@@ -26,9 +26,10 @@ const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
           alt={categoryImage?.altText ?? ''}
           width={categoryImage?.width ?? 0}
           height={categoryImage?.height ?? 0}
-          layout="blur"
+          placeholder="blur"
+          loading={'eager'}
           blurDataURL={categoryBlurredImage?.url ?? ''}
-          className={`object-cover rounded-t-xl rounded-b-none w-full ${index % 2 === 0 ? 'lg:rounded-l-xl lg:rounded-r-none' : 'lg:rounded-r-xl lg:rounded-l-none'}`}
+          className={`w-full min-h-full object-cover rounded-t-xl lg:rounded-t-none rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
         />
         {/*Text Side of Featured Card*/}
         <div className="flex-col p-5 w-full">

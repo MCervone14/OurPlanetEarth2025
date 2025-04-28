@@ -22,7 +22,7 @@ const RecentIndividualCard = ({ article }: RecentArticleProps) => {
         height={featuredImage?.height ?? 0}
         blurDataURL={featuredBlurredImage?.url ?? ''}
         className={'aspect-[4/3] object-center object-cover rounded'}
-        layout="blur"
+        placeholder="blur"
       />
       <div className="p-5">
         {/*{article.categories.map((category) => (*/}

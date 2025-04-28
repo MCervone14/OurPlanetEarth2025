@@ -22,8 +22,8 @@ const AuthorCard = ({ author, index }: AuthorProps) => {
           width={authorImage?.width ?? 0}
           height={authorImage?.height ?? 0}
           blurDataURL={authorImage?.url ?? ''}
-          layout="blur"
-          className={`w-full h-full object-cover rounded-t-xl rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
+          placeholder="blur"
+          className={`w-full h-full object-cover rounded-t-xl rounded-b-none lg:rounded-t-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
           loading={'eager'}
         />
         <div className="flex-col p-5 w-full">

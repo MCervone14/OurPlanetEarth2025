@@ -31,8 +31,8 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
           width={featuredImage?.width ?? 0}
           height={featuredImage?.height ?? 0}
           blurDataURL={featuredBlurredImage?.url ?? ''}
-          className={`w-full min-h-full rounded-b-none rounded-t-xl lg:rounded-t-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : ' lg:rounded-r-xl'}`}
-          layout="blur"
+          className={`w-full min-h-full object-cover rounded-b-none rounded-t-xl lg:rounded-t-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : ' lg:rounded-r-xl'}`}
+          placeholder="blur"
           loading={'eager'}
         />
         <div className="flex-col p-5 lg:max-w-1/2">

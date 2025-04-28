@@ -11,10 +11,8 @@ export default function CTAFooter({ className }: { className?: string }) {
     <footer className={cn(`w-full py-12 bg-green-50 mt-4`, className)}>
       <div className="container px-4 mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">
-            Our Journey to
-            <br />
-            Fight for Climate Change
+          <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight">
+            Our Journey to a Sustainable Future!
           </h2>
           <div className="flex justify-center gap-4">
             <Link href={'/auth/sign-up'}>
