@@ -87,7 +87,7 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
         height={featuredImage?.height ?? 0}
         blurDataURL={featuredBlurredImage?.url ?? ''}
         className={'min-h-[450px] min-w-6xl'}
-        layout="blur"
+        placeholder="blur"
         loading={'eager'}
       />
       <div className="w-full border-4 text-xs lg:text-lg border-green-950">

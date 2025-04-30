@@ -29,10 +29,10 @@ const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
           placeholder="blur"
           loading={'eager'}
           blurDataURL={categoryBlurredImage?.url ?? ''}
-          className={`w-full min-h-full object-cover rounded-t-xl lg:rounded-t-none rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
+          className={`w-full lg:w-1/2 min-h-full object-cover rounded-t-xl lg:rounded-t-none rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
         />
         {/*Text Side of Featured Card*/}
-        <div className="flex-col p-5 w-full">
+        <div className="flex-col p-5 w-full lg:w-1/2">
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-6">
               <div className={`flex items-center justify-center`}>

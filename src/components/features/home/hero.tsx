@@ -33,7 +33,7 @@ const HomeCover = async () => {
         width={featuredImage?.width ?? 0}
         height={featuredImage?.height ?? 0}
         blurDataURL={featuredBlurredImage?.url ?? ''}
-        layout="blur"
+        placeholder="blur"
         className="w-full h-full object-cover"
         loading={'eager'}
       />

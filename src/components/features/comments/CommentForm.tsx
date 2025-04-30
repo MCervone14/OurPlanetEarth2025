@@ -81,20 +81,6 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
               className="w-full border border-gray-300 p-2"
             />
           </div>
-          <div>
-            <label htmlFor="email" className="block mb-2">
-              Email <span className="text-red-500">*</span>
-            </label>
-            <Input
-              type="email"
-              id="email"
-              defaultValue={sessionData?.user.email || ''}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-300 p-2"
-            />
-          </div>
-          {message && <div className="text-red-500">{message}</div>}
         </div>
         <Button
           type="submit"

@@ -42,7 +42,7 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
                 <Image
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}
-                  layout="blur"
+                  placeholder="blur"
                   blurDataURL={authorBlurImage?.url ?? ''}
                   width={64}
                   height={64}
@@ -83,7 +83,7 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
                         <Image
                           src={catIcon?.url ?? ''}
                           alt={catIcon?.altText ?? ''}
-                          layout="blur"
+                          placeholder="blur"
                           blurDataURL={catIcon?.url ?? ''}
                           width={32}
                           height={32}
