@@ -66,8 +66,6 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
   const article = await GetArticle(slug)
 
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
-  const featuredBlurredImage =
-    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
   const categories = typeof article?.categories === 'object' ? article.categories : null
 
   if (!article) {
@@ -85,7 +83,7 @@ const SingleArticlePage = async ({ params }: { params: Promise<{ slug: string }>
         alt={featuredImage?.altText ?? ''}
         width={featuredImage?.width ?? 0}
         height={featuredImage?.height ?? 0}
-        blurDataURL={featuredBlurredImage?.url ?? ''}
+        blurDataURL={article?.imageBase64 ?? ''}
         className={'min-h-[450px] min-w-6xl'}
         placeholder="blur"
         loading={'eager'}

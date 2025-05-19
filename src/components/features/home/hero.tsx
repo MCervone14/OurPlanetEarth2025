@@ -21,9 +21,6 @@ const HomeCover = async () => {
   const featuredImage =
     typeof article[0]?.featuredImage === 'object' ? article[0].featuredImage : null
 
-  const featuredBlurredImage =
-    typeof article[0]?.[`image-blur-url`] === 'object' ? article[0]?.[`image-blur-url`] : null
-
   return (
     <section className="flex relative flex-col h- w-full px-4">
       <Image
@@ -32,10 +29,9 @@ const HomeCover = async () => {
         alt={featuredImage?.altText ?? ''}
         width={featuredImage?.width ?? 0}
         height={featuredImage?.height ?? 0}
-        blurDataURL={featuredBlurredImage?.url ?? ''}
+        blurDataURL={article[0].imageBase64 ?? ''}
         placeholder="blur"
         className="w-full h-full object-cover"
-        loading={'eager'}
       />
       <div className="w-full mx-auto p-6 flex flex-col items-start bottom-0 z-10 text-white bg-slate-900 ">
         <Link href={`/articles/${article[0]?.slug}`} className="my-3 hover:text-green-600">

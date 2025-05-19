@@ -19,7 +19,7 @@ const AuthorCard = ({ author, index }: AuthorProps) => {
           alt={authorImage?.altText ?? ''}
           width={authorImage?.width ?? 0}
           height={authorImage?.height ?? 0}
-          blurDataURL={authorImage?.url ?? ''}
+          blurDataURL={author?.imageBase64 ?? ''}
           placeholder="blur"
           className={`w-full lg:w-1/2 h-full object-cover rounded-t-xl lg:rounded-t-none lg:rounded-l-xl`}
           loading={'eager'}

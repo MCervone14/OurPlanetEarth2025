@@ -1,20 +1,16 @@
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Post, Category } from '@/payload-types'
-import { ArrowRightIcon, CalendarIcon, FileIcon } from 'lucide-react'
+import { ArrowRightIcon, CalendarIcon } from 'lucide-react'
 import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 
 const FeaturedIndividualCard = ({ article, index }: { article: Post; index: number }) => {
   const featuredImage = typeof article?.featuredImage === 'object' ? article.featuredImage : null
-  const featuredBlurredImage =
-    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
   const categories = typeof article?.categories === 'object' ? article.categories : null
   const author = typeof article?.author === 'object' ? article.author : null
   const authorImage = typeof author?.image === 'object' ? author?.image : null
-  const authorBlurImage =
-    typeof author?.['image-blur-url'] === 'object' ? author?.['image-blur-url'] : null
 
   return (
     <article className="rounded-xl shadow-lg bg-white relative mt-8 max-w-[650px] lg:max-w-[1250px] mx-auto">
@@ -30,7 +26,7 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
           alt={featuredImage?.altText ?? ''}
           width={featuredImage?.width ?? 0}
           height={featuredImage?.height ?? 0}
-          blurDataURL={featuredBlurredImage?.url ?? ''}
+          blurDataURL={article.imageBase64 ?? ''}
           className={`w-full min-h-full object-cover rounded-b-none rounded-t-xl lg:rounded-t-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : ' lg:rounded-r-xl'}`}
           placeholder="blur"
           loading={'eager'}
@@ -43,7 +39,7 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
                   src={authorImage?.url ?? ''}
                   alt={authorImage?.altText ?? ''}
                   placeholder="blur"
-                  blurDataURL={authorBlurImage?.url ?? ''}
+                  blurDataURL={author?.imageBase64 ?? ''}
                   width={64}
                   height={64}
                   className="rounded-full mr-3"
@@ -83,8 +79,6 @@ const FeaturedIndividualCard = ({ article, index }: { article: Post; index: numb
                         <Image
                           src={catIcon?.url ?? ''}
                           alt={catIcon?.altText ?? ''}
-                          placeholder="blur"
-                          blurDataURL={catIcon?.url ?? ''}
                           width={32}
                           height={32}
                           className="rounded-full mr-3"

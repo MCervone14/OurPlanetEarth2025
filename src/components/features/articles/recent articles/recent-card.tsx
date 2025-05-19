@@ -9,8 +9,6 @@ type RecentArticleProps = {
 
 const RecentIndividualCard = ({ article }: RecentArticleProps) => {
   const featuredImage = typeof article.featuredImage === 'object' ? article.featuredImage : null
-  const featuredBlurredImage =
-    typeof article?.[`image-blur-url`] === 'object' ? article?.[`image-blur-url`] : null
 
   return (
     <article className="relative shadow-lg bg-white rounded-lg">
@@ -20,7 +18,7 @@ const RecentIndividualCard = ({ article }: RecentArticleProps) => {
         alt={featuredImage?.altText ?? ''}
         width={featuredImage?.width ?? 0}
         height={featuredImage?.height ?? 0}
-        blurDataURL={featuredBlurredImage?.url ?? ''}
+        blurDataURL={article?.imageBase64 ?? ''}
         className={'aspect-[4/3] object-center object-cover rounded'}
         placeholder="blur"
       />

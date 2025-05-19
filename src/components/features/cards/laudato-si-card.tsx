@@ -10,8 +10,6 @@ interface LaudatoSiCardProps {
 
 const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
   const categoryImage = typeof category?.image === 'object' ? category?.image : null
-  const categoryBlurredImage =
-    typeof category?.['image-blur-url'] === 'object' ? category?.['image-blur-url'] : null
   const icon = typeof category.icon === 'object' ? category.icon : null
 
   return (
@@ -28,7 +26,7 @@ const LaudatoSiCard = ({ category, index }: LaudatoSiCardProps) => {
           height={categoryImage?.height ?? 0}
           placeholder="blur"
           loading={'eager'}
-          blurDataURL={categoryBlurredImage?.url ?? ''}
+          blurDataURL={category?.imageBase64 ?? ''}
           className={`w-full lg:w-1/2 min-h-full object-cover rounded-t-xl lg:rounded-t-none rounded-b-none ${index % 2 === 0 ? 'lg:rounded-l-xl' : 'lg:rounded-r-xl'}`}
         />
         {/*Text Side of Featured Card*/}

@@ -27,10 +27,9 @@ export const Authors: CollectionConfig = {
       required: true,
     },
     {
-      name: 'image-blur-url',
+      name: 'imageBase64',
       label: 'Author Image blur',
-      type: 'upload',
-      relationTo: 'media',
+      type: 'text',
     },
     {
       name: 'bio',

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { AuthUIContext } from '@/components/features/providers/auth-ui-provider'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
+import { HandleCommentFormSubmit } from '@/actions/comment-form-action'
 
 const CommentForm = ({ articleId }: { articleId: number }) => {
   const {
@@ -19,37 +20,36 @@ const CommentForm = ({ articleId }: { articleId: number }) => {
   const [email, setEmail] = useState(sessionData?.user?.email || '')
   const [message, setMessage] = useState('')
 
-  const handleSubmit = async () => {
-    const response = await fetch('/api/comments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        author: { name, email },
-        content,
-        post: Number(articleId),
-        comments: Number(articleId),
-      }),
-    })
+  // const handleSubmit = async () => {
+  //   const response = await fetch('/api/comments', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       author: { name, email },
+  //       content,
+  //       post: articleId,
+  //       comments: articleId,
+  //     }),
+  //   })
+  //
+  //   const result = await response.json()
+  //
+  //   if (response.ok) {
+  //     setName(sessionData?.user?.name || '')
+  //     setEmail(sessionData?.user?.email || '')
+  //     setContent('')
+  //     setMessage('')
+  //   }
+  //
+  //   if (!response.ok) {
+  //     const errorMessage = result.errors?.[0]?.message
+  //     setMessage(errorMessage)
+  //   }
+  // }
 
-    const result = await response.json()
-
-    if (response.ok) {
-      setName(sessionData?.user?.name || '')
-      setEmail(sessionData?.user?.email || '')
-      setContent('')
-      setMessage('')
-      router.refresh()
-    }
-
-    if (!response.ok) {
-      const errorMessage = result.errors?.[0]?.message
-      setMessage(errorMessage)
-    }
-  }
-
-  const [state, formAction, isSubmitting] = useActionState(handleSubmit, null)
+  const [state, formAction, isSubmitting] = useActionState(HandleCommentFormSubmit, null)
 
   return (
     <div className="mt-12">

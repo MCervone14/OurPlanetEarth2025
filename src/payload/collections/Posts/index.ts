@@ -51,10 +51,9 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
-      name: 'image-blur-url',
+      name: 'imageBase64',
       label: 'Featured Image Blur',
-      type: 'upload',
-      relationTo: 'media',
+      type: 'text',
     },
     {
       name: 'categories',

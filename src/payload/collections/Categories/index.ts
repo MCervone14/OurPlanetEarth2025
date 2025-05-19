@@ -33,10 +33,9 @@ export const Categories: CollectionConfig = {
       required: true,
     },
     {
-      name: 'image-blur-url',
+      name: 'imageBase64',
       label: 'Category Image blur',
-      type: 'upload',
-      relationTo: 'media',
+      type: 'text',
     },
     {
       name: 'category-posts',
