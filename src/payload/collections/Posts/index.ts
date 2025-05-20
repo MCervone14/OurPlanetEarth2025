@@ -6,6 +6,34 @@ export const Posts: CollectionConfig = {
   slug: 'posts',
   access: {
     read: () => true,
+    create: ({ req }) => {
+      if (req.user?.role === 'admin') {
+        return true
+      }
+
+      return {
+        id: { equals: req.user?.id },
+      }
+    },
+    update: ({ req }) => {
+      if (req.user?.role === 'admin') {
+        return true
+      }
+
+      return {
+        id: { equals: req.user?.id },
+      }
+    },
+    delete: ({ req }) => {
+      if (req.user?.role === 'admin') {
+        return true
+      }
+
+      return {
+        id: { equals: req.user?.id },
+      }
+    },
+    admin: ({ req }) => req.user?.role === 'admin',
   },
   admin: {
     useAsTitle: 'title',
